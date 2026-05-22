@@ -5,6 +5,476 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uzay Quiz - Milli Uzay Programı</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        /* QUIZ OYUNU ÖZEL STİLLERİ */
+        
+        .quiz-wrapper {
+            width: 100%;
+        }
+        
+        .quiz-screen {
+            display: none;
+        }
+        
+        .quiz-screen.active {
+            display: block;
+            animation: fadeIn 0.5s ease-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* BAŞLANGIÇ EKRANI */
+        .quiz-start {
+            text-align: center;
+        }
+        
+        .difficulty-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .difficulty-btn {
+            background: rgba(31, 41, 55, 0.6);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .difficulty-btn:hover {
+            transform: translateY(-5px);
+            border-color: #8b5cf6;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+        
+        .difficulty-btn.easy {
+            border-top: 4px solid #10b981;
+        }
+        
+        .difficulty-btn.medium {
+            border-top: 4px solid #fbbf24;
+        }
+        
+        .difficulty-btn.hard {
+            border-top: 4px solid #f97316;
+        }
+        
+        .difficulty-btn.expert {
+            border-top: 4px solid #dc2626;
+        }
+        
+        .difficulty-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        /* QUIZ OYUN EKRANI */
+        .quiz-game {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: rgba(139, 92, 246, 0.1);
+            border-radius: 1rem;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+        
+        .quiz-stats {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-label {
+            color: #9ca3af;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #c084fc;
+            margin-top: 0.3rem;
+        }
+        
+        .timer {
+            font-size: 1.5rem;
+            font-weight: bold;
+            padding: 0.5rem 1rem;
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 0.5rem;
+            min-width: 70px;
+        }
+        
+        .timer.warning {
+            color: #fbbf24;
+        }
+        
+        .timer.critical {
+            color: #dc2626;
+            animation: pulse 0.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        /* SORU EKRANI */
+        .question-container {
+            background: rgba(31, 41, 55, 0.6);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 1rem;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .question-progress {
+            font-size: 0.9rem;
+            color: #9ca3af;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #8b5cf6, #ec4899);
+            transition: width 0.3s ease;
+        }
+        
+        .question-text {
+            font-size: 1.4rem;
+            color: white;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+        
+        .difficulty-badge {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            background: rgba(139, 92, 246, 0.3);
+            border: 1px solid rgba(139, 92, 246, 0.5);
+            border-radius: 2rem;
+            font-size: 0.8rem;
+            color: #a78bfa;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+        }
+        
+        /* CEVAP SEÇENEKLERİ */
+        .options-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        @media (max-width: 600px) {
+            .options-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .option-btn {
+            background: rgba(31, 41, 55, 0.6);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            text-align: left;
+            position: relative;
+        }
+        
+        .option-btn:hover:not(:disabled) {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateX(5px);
+        }
+        
+        .option-btn.selected {
+            border-color: #3b82f6;
+            background: rgba(59, 130, 246, 0.2);
+        }
+        
+        .option-btn.correct {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.2);
+            color: #6ee7b7;
+        }
+        
+        .option-btn.wrong {
+            border-color: #dc2626;
+            background: rgba(220, 38, 38, 0.2);
+            color: #fca5a5;
+        }
+        
+        .option-btn:disabled {
+            cursor: not-allowed;
+        }
+        
+        .option-letter {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            background: rgba(139, 92, 246, 0.3);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 30px;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+        
+        .option-btn.correct .option-letter {
+            background: rgba(16, 185, 129, 0.5);
+        }
+        
+        .option-btn.wrong .option-letter {
+            background: rgba(220, 38, 38, 0.5);
+        }
+        
+        /* YANIT GERI BİLDİRİMİ */
+        .feedback {
+            display: none;
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .feedback.correct {
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            color: #6ee7b7;
+        }
+        
+        .feedback.wrong {
+            background: rgba(220, 38, 38, 0.2);
+            border: 1px solid rgba(220, 38, 38, 0.5);
+            color: #fca5a5;
+        }
+        
+        .feedback.active {
+            display: block;
+        }
+        
+        .next-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(to right, #8b5cf6, #ec4899);
+            border: none;
+            border-radius: 0.75rem;
+            color: white;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: none;
+        }
+        
+        .next-btn.show {
+            display: block;
+        }
+        
+        .next-btn:hover {
+            transform: scale(1.02);
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.4);
+        }
+        
+        /* SONUÇ EKRANI */
+        .quiz-results {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .final-score {
+            font-size: 4rem;
+            font-weight: bold;
+            background: linear-gradient(to right, #60a5fa, #a78bfa);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 2rem 0;
+        }
+        
+        .score-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        @media (max-width: 600px) {
+            .score-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .score-stat-card {
+            background: rgba(31, 41, 55, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+        
+        .score-stat-card h4 {
+            color: #a78bfa;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        .score-stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #c084fc;
+        }
+        
+        .medal {
+            font-size: 5rem;
+            margin: 1rem 0;
+        }
+        
+        .medal-name {
+            font-size: 1.5rem;
+            color: #fbbf24;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .result-message {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            font-size: 1.1rem;
+            color: #ddd;
+            line-height: 1.6;
+        }
+        
+        .leaderboard {
+            background: rgba(31, 41, 55, 0.6);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+        }
+        
+        .leaderboard h3 {
+            color: #c084fc;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .leaderboard-entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem;
+            border-bottom: 1px solid rgba(139, 92, 246, 0.2);
+            color: #ddd;
+        }
+        
+        .leaderboard-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .leaderboard-rank {
+            font-weight: bold;
+            color: #a78bfa;
+            min-width: 30px;
+        }
+        
+        .leaderboard-entry .score {
+            color: #fbbf24;
+            font-weight: bold;
+        }
+        
+        /* BUTONLAR */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn-reset {
+            padding: 1rem 2rem;
+            background: linear-gradient(to right, #3b82f6, #06b6d4);
+            border: none;
+            border-radius: 2rem;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-reset:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-back {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: 2px solid rgba(139, 92, 246, 0.5);
+            border-radius: 2rem;
+            color: white;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-back:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: #8b5cf6;
+        }
+    </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
@@ -30,86 +500,139 @@
         <h1 class="page-title">🏆 Milli Uzay Programı Quiz</h1>
         <p class="page-subtitle">Türkiye'nin uzay hedeflerini ne kadar iyi biliyorsun? Test et!</p>
 
-        <!-- OYUN ALANI - BU BÖLÜME QUIZ OYUNUNUZU EKLEYİN -->
+        <!-- QUIZ OYUNU ALANI -->
         <div class="game-container">
-            <div class="game-placeholder">
-                <div style="font-size: 5rem; margin-bottom: 2rem;">🏆</div>
-                <h2>Quiz Geliştirme Alanı</h2>
-                <p>Bu alana Milli Uzay Programı quiz oyununuzu ekleyebilirsiniz.</p>
-                <p style="margin-top: 1rem;">Önerilen özellikler:</p>
-                <ul style="list-style: none; padding: 0; color: #9ca3af;">
-                    <li>✦ Çoktan seçmeli sorular (4 şık)</li>
-                    <li>✦ 10 hedef hakkında sorular</li>
-                    <li>✦ Tarihçe ve projeler hakkında sorular</li>
-                    <li>✦ Zamanlayıcı (her soru için 30 saniye)</li>
-                    <li>✦ Puan sistemi (doğru: +10, yanlış: -5)</li>
-                    <li>✦ Seviye sistemi (kolay, orta, zor)</li>
-                    <li>✦ Liderlik tablosu</li>
-                </ul>
-                <div style="margin-top: 2rem;">
-                    <a href="oyunlar.html" class="btn btn-primary">⬅ Oyunlar Sayfasına Dön</a>
+            <div class="quiz-wrapper">
+                
+                <!-- BAŞLANGIÇ EKRANI -->
+                <div class="quiz-screen active quiz-start" id="startScreen">
+                    <div style="font-size: 5rem; margin-bottom: 1rem;">🏆</div>
+                    <h2 style="font-size: 2rem; color: #c084fc; margin-bottom: 1rem;">Zorluk Seviyesi Seç</h2>
+                    <p style="color: #9ca3af; margin-bottom: 2rem; font-size: 1.1rem;">
+                        Hangi seviyede oynamak istersin?
+                    </p>
+                    
+                    <div class="difficulty-grid">
+                        <button class="difficulty-btn easy" onclick="startQuiz('kolay')">
+                            <div class="difficulty-icon">🟢</div>
+                            <div>Kolay</div>
+                            <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.5rem;">10 soru • 40 saniye</div>
+                        </button>
+                        <button class="difficulty-btn medium" onclick="startQuiz('orta')">
+                            <div class="difficulty-icon">🟡</div>
+                            <div>Orta</div>
+                            <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.5rem;">15 soru • 30 saniye</div>
+                        </button>
+                        <button class="difficulty-btn hard" onclick="startQuiz('zor')">
+                            <div class="difficulty-icon">🟠</div>
+                            <div>Zor</div>
+                            <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.5rem;">20 soru • 25 saniye</div>
+                        </button>
+                        <button class="difficulty-btn expert" onclick="startQuiz('uzman')">
+                            <div class="difficulty-icon">🔴</div>
+                            <div>Uzman</div>
+                            <div style="font-size: 0.8rem; color: #9ca3af; margin-top: 0.5rem;">25 soru • 20 saniye</div>
+                        </button>
+                    </div>
+
+                    <div class="info-box" style="margin-top: 3rem; text-align: left;">
+                        <h3>📋 Oyun Kuralları</h3>
+                        <p><strong>Puanlama:</strong></p>
+                        <p>• Doğru cevap: +10 puan</p>
+                        <p>• Yanlış cevap: -5 puan</p>
+                        <p>• Hızlı cevap bonusu: +1-5 puan (kalan süreye göre)</p>
+                        
+                        <p style="margin-top: 1rem;"><strong>Rozetler:</strong></p>
+                        <p>🥉 Bronz: 50+ puan | 🥈 Gümüş: 100+ puan | 🥇 Altın: 150+ puan | 💎 Elmas: 200+ puan</p>
+                    </div>
                 </div>
+
+                <!-- OYUN EKRANI -->
+                <div class="quiz-screen quiz-game" id="gameScreen">
+                    <div class="quiz-header">
+                        <div class="quiz-stats">
+                            <div class="stat-item">
+                                <div class="stat-label">Soru</div>
+                                <div class="stat-value"><span id="currentQuestion">1</span>/<span id="totalQuestions">10</span></div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-label">Puan</div>
+                                <div class="stat-value" id="currentScore">0</div>
+                            </div>
+                        </div>
+                        <div class="timer" id="timer">40s</div>
+                    </div>
+
+                    <div class="question-container">
+                        <div class="question-progress" id="difficultyLabel">Kolay</div>
+                        
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressBar"></div>
+                        </div>
+                        
+                        <div class="difficulty-badge" id="difficultyBadge">Kolay</div>
+                        
+                        <div class="question-text" id="questionText">
+                            Sorular yükleniyor...
+                        </div>
+
+                        <div class="options-container" id="optionsContainer">
+                            <!-- Seçenekler buraya yüklenir -->
+                        </div>
+
+                        <div class="feedback" id="feedback"></div>
+
+                        <button class="next-btn" id="nextBtn" onclick="nextQuestion()">
+                            Sonraki Soru →
+                        </button>
+                    </div>
+                </div>
+
+                <!-- SONUÇ EKRANI -->
+                <div class="quiz-screen quiz-results" id="resultsScreen">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;" id="resultMedal">🏆</div>
+                    
+                    <h2 style="font-size: 2rem; color: #c084fc; margin-bottom: 1rem;">Quiz Tamamlandı!</h2>
+                    
+                    <div class="final-score" id="finalScore">0</div>
+                    
+                    <div class="medal-name" id="medalName">Başarı Sertifikası</div>
+                    
+                    <div class="result-message" id="resultMessage">
+                        Tebrikler!
+                    </div>
+
+                    <div class="score-stats">
+                        <div class="score-stat-card">
+                            <h4>✅ Doğru</h4>
+                            <div class="value" id="correctCount">0</div>
+                        </div>
+                        <div class="score-stat-card">
+                            <h4>❌ Yanlış</h4>
+                            <div class="value" id="wrongCount">0</div>
+                        </div>
+                        <div class="score-stat-card">
+                            <h4>📊 Başarı</h4>
+                            <div class="value" id="successRate">0%</div>
+                        </div>
+                    </div>
+
+                    <div class="leaderboard" id="leaderboard">
+                        <h3>🏅 En İyi Skorlar</h3>
+                        <div id="leaderboardList"></div>
+                    </div>
+
+                    <div class="button-group">
+                        <button class="btn-reset" onclick="restartQuiz()">
+                            🔄 Yeniden Başla
+                        </button>
+                        <a href="oyunlar.html" class="btn-back">
+                            ⬅ Oyunlar Sayfası
+                        </a>
+                    </div>
+                </div>
+
             </div>
-        </div>
-
-        <!-- ÖRNEK SORULAR -->
-        <div class="info-box" style="margin-top: 2rem;">
-            <h3>📝 Örnek Sorular</h3>
-            
-            <h4 style="margin-top: 1rem;">Soru 1: Kolay</h4>
-            <p><strong>Milli Uzay Programı kaç hedeften oluşur?</strong></p>
-            <p>A) 5<br>B) 10 ✓<br>C) 15<br>D) 20</p>
-            
-            <h4 style="margin-top: 1.5rem;">Soru 2: Orta</h4>
-            <p><strong>Türkiye'nin Ay'a ilk temas hedefi hangi yıl?</strong></p>
-            <p>A) 2025<br>B) 2028 ✓<br>C) 2030<br>D) 2033</p>
-            
-            <h4 style="margin-top: 1.5rem;">Soru 3: Zor</h4>
-            <p><strong>Türkiye Uzay Ajansı hangi tarihte kuruldu?</strong></p>
-            <p>A) 13 Aralık 2018 ✓<br>B) 7 Ağustos 2019<br>C) 9 Şubat 2021<br>D) 29 Ekim 2023</p>
-            
-            <h4 style="margin-top: 1.5rem;">Soru 4: Çok Zor</h4>
-            <p><strong>İlk yerli küçük uydu RASAT hangi yıl fırlatıldı?</strong></p>
-            <p>A) 2009<br>B) 2011 ✓<br>C) 2012<br>D) 2014</p>
-            
-            <h4 style="margin-top: 1.5rem;">Soru 5: Uzman</h4>
-            <p><strong>Göktürk-2 uydusunun çözünürlüğü nedir?</strong></p>
-            <p>A) 5 metre<br>B) 2.5 metre ✓<br>C) 1 metre<br>D) 0.5 metre</p>
-        </div>
-
-        <!-- OYUN KURALLARI -->
-        <div class="info-box">
-            <h3>📋 Oyun Kuralları</h3>
-            <p><strong>Puanlama:</strong></p>
-            <p>• Doğru cevap: +10 puan</p>
-            <p>• Yanlış cevap: -5 puan</p>
-            <p>• Hızlı cevap bonusu: +1-5 puan (kalan süreye göre)</p>
-            <p>• Cevapsız geçme: 0 puan</p>
-            
-            <p style="margin-top: 1rem;"><strong>Seviyeler:</strong></p>
-            <p>• <span style="color: #10b981;">Kolay:</span> 10 soru, 40 saniye, temel bilgiler</p>
-            <p>• <span style="color: #fbbf24;">Orta:</span> 15 soru, 30 saniye, detaylı bilgiler</p>
-            <p>• <span style="color: #f97316;">Zor:</span> 20 soru, 25 saniye, tarihler ve sayılar</p>
-            <p>• <span style="color: #dc2626;">Uzman:</span> 25 soru, 20 saniye, tüm detaylar</p>
-            
-            <p style="margin-top: 1rem;"><strong>Rozetler:</strong></p>
-            <p>🥉 Bronz: 50+ puan</p>
-            <p>🥈 Gümüş: 100+ puan</p>
-            <p>🥇 Altın: 150+ puan</p>
-            <p>💎 Elmas: 200+ puan</p>
-            <p>🏆 Ustaya: Tüm soruları doğru cevapla!</p>
-        </div>
-
-        <!-- SORU HAVUZU ÖRNEKLERİ -->
-        <div class="info-box">
-            <h3>🎯 Soru Kategorileri</h3>
-            <p><strong>1. 10 Hedef:</strong> Her hedefin adı, amacı, kazanımları</p>
-            <p><strong>2. Tarihçe:</strong> Önemli tarihler, projeler, ilkler</p>
-            <p><strong>3. Uydu Projeleri:</strong> TÜRKSAT, Göktürk, İMECE, RASAT</p>
-            <p><strong>4. Türkiye Uzay Ajansı:</strong> Kuruluş, görevler, hedefler</p>
-            <p><strong>5. Dünya Uzay Yarışı:</strong> Genel bilgiler, karşılaştırmalar</p>
-            <p><strong>6. Astronomi:</strong> Gözlemevleri, teleskoplar</p>
-            <p><strong>7. Teknoloji:</strong> Roketler, uydu sistemleri, yörüngeler</p>
         </div>
     </div>
 
@@ -120,58 +643,627 @@
 
     <script src="script.js"></script>
 
-    <!-- QUIZ JAVASCRIPT KODLARI BURAYA -->
+    <!-- QUIZ OYUNU JAVASCRIPT -->
     <script>
-        // Bu alana quiz oyununun JavaScript kodlarını ekleyebilirsiniz
-        
-        console.log('🏆 Milli Uzay Programı Quiz yüklendi');
-        
-        // Örnek soru havuzu yapısı:
-        const ornekSoruHavuzu = [
+        // ============================================
+        // SORU HAVUZU (50+ soru)
+        // ============================================
+        const sorular = [
+            // KOLAY SORULAR
             {
-                soru: "Milli Uzay Programı hangi yıl açıklandı?",
-                secenekler: ["2019", "2020", "2021", "2022"],
-                dogruCevap: 2, // index: 2021
+                soru: "Milli Uzay Programı kaç hedeften oluşur?",
+                secenekler: ["5", "10", "15", "20"],
+                dogruCevap: 1,
+                seviye: "kolay",
+                kategori: "Temel"
+            },
+            {
+                soru: "Türkiye Uzay Ajansı hangi tarihte kuruldu?",
+                secenekler: ["7 Ağustos 2019", "13 Aralık 2018", "9 Şubat 2021", "29 Ekim 2023"],
+                dogruCevap: 0,
                 seviye: "kolay",
                 kategori: "Tarihçe"
             },
             {
+                soru: "Milli Uzay Programı kaç yıl için planlanmıştır?",
+                secenekler: ["5 yıl", "7 yıl", "10 yıl", "12 yıl"],
+                dogruCevap: 2,
+                seviye: "kolay",
+                kategori: "Temel"
+            },
+            {
+                soru: "Aşağıdakilerden hangisi bir uydu değildir?",
+                secenekler: ["TÜRKSAT", "Göktürk", "İMECE", "UZAYKULE"],
+                dogruCevap: 3,
+                seviye: "kolay",
+                kategori: "Uydu"
+            },
+            {
                 soru: "İlk Türk astronot kimdir?",
-                secenekler: ["Alper Gezeravcı", "Tuva Cihangir Atasever", "Mehmet Öz", "Aziz Sancar"],
+                secenekler: ["Tuva Cihangir Atasever", "Alper Gezeravcı", "Mehmet Öz", "Aziz Sancar"],
                 dogruCevap: 0,
                 seviye: "kolay",
                 kategori: "Astronot"
             },
-            // Daha fazla soru eklenebilir...
+            {
+                soru: "Milli Uzay Programı'nın başladığı yıl?",
+                secenekler: ["2018", "2019", "2020", "2021"],
+                dogruCevap: 3,
+                seviye: "kolay",
+                kategori: "Tarihçe"
+            },
+            {
+                soru: "Türkiye'nin kendi roketini fırlatma hedefi hangi yıl?",
+                secenekler: ["2025", "2027", "2028", "2030"],
+                dogruCevap: 2,
+                seviye: "kolay",
+                kategori: "10 Hedef"
+            },
+            {
+                soru: "TÜRKSAT uydusu ne işe yarar?",
+                secenekler: ["Harita çıkarma", "Haberleşme", "Eğitim", "Araştırma"],
+                dogruCevap: 1,
+                seviye: "kolay",
+                kategori: "Uydu"
+            },
+            {
+                soru: "Göktürk uydusu hangi amaçla kullanılır?",
+                secenekler: ["Haberleşme", "Uzaktan algılama", "GPS", "Hava tahmini"],
+                dogruCevap: 1,
+                seviye: "kolay",
+                kategori: "Uydu"
+            },
+            {
+                soru: "Milli Uzay Programı'nın nihai amacı nedir?",
+                secenekler: ["Eğlence", "Uzaya bağımsız erişim", "Turizm", "Spor"],
+                dogruCevap: 1,
+                seviye: "kolay",
+                kategori: "Temel"
+            },
+
+            // ORTA SORULAR
+            {
+                soru: "Türkiye'nin Ay'a ilk temas hedefi hangi yıl?",
+                secenekler: ["2025", "2028", "2030", "2033"],
+                dogruCevap: 1,
+                seviye: "orta",
+                kategori: "10 Hedef"
+            },
+            {
+                soru: "RASAT uydusunun türü nedir?",
+                secenekler: ["Haberleşme", "Küçük uydu", "GPS", "Araştırma"],
+                dogruCevap: 1,
+                seviye: "orta",
+                kategori: "Uydu"
+            },
+            {
+                soru: "İmece projesinin amacı nedir?",
+                secenekler: ["Uzaktan algılama", "Haberleşme", "Veri saklama", "İnsan taşımacılığı"],
+                dogruCevap: 0,
+                seviye: "orta",
+                kategori: "Proje"
+            },
+            {
+                soru: "Milli Uzay Programı'nın ana hedefleri nelerdir?",
+                secenekler: ["Sadece uydu", "Roket, uydu, astronaut", "Sadece roket", "Sadece araştırma"],
+                dogruCevap: 1,
+                seviye: "orta",
+                kategori: "Temel"
+            },
+            {
+                soru: "Göktürk-2 uydusunun çözünürlüğü nedir?",
+                secenekler: ["5 metre", "2.5 metre", "1 metre", "0.5 metre"],
+                dogruCevap: 1,
+                seviye: "orta",
+                kategori: "Uydu"
+            },
+            {
+                soru: "Alper Gezeravcı ne zaman uzaya gitti?",
+                secenekler: ["2022", "2023", "2024", "2025"],
+                dogruCevap: 2,
+                seviye: "orta",
+                kategori: "Astronot"
+            },
+            {
+                soru: "Türkiye'nin ISS'e ilk astronot gönderme hedefi?",
+                secenekler: ["2025", "2026", "2027", "2028"],
+                dogruCevap: 2,
+                seviye: "orta",
+                kategori: "10 Hedef"
+            },
+            {
+                soru: "Uzaktan algılama uyduları hangi alanlarda kullanılır?",
+                secenekler: ["Sadece harita", "Tarım, afet, çevre", "Sadece hava tahmini", "Sadece askeri"],
+                dogruCevap: 1,
+                seviye: "orta",
+                kategori: "Uydu"
+            },
+            {
+                soru: "Türkiye'nin uydu fırlatma sistemi hedefi?",
+                secenekler: ["2025", "2027", "2028", "2030"],
+                dogruCevap: 2,
+                seviye: "orta",
+                kategori: "10 Hedef"
+            },
+            {
+                soru: "Türkiye'nin uzay limanı projesi nerede kurulacak?",
+                secenekler: ["Muğla", "Kaş", "Kahramanmaraş", "Van"],
+                dogruCevap: 2,
+                seviye: "orta",
+                kategori: "Proje"
+            },
+
+            // ZOR SORULAR
+            {
+                soru: "Türkiye'nin Ay'a insan göndermesi hedefi hangi yıl?",
+                secenekler: ["2030", "2033", "2035", "2040"],
+                dogruCevap: 1,
+                seviye: "zor",
+                kategori: "10 Hedef"
+            },
+            {
+                soru: "TÜRKSAT 6A'nın kapasitesi kaç transponder?",
+                secenekler: ["42", "50", "60", "72"],
+                dogruCevap: 3,
+                seviye: "zor",
+                kategori: "Uydu"
+            },
+            {
+                soru: "İlk yerli küçük uydu RASAT hangi yıl fırlatıldı?",
+                secenekler: ["2009", "2011", "2012", "2014"],
+                dogruCevap: 1,
+                seviye: "zor",
+                kategori: "Uydu"
+            },
+            {
+                soru: "Göktürk-1 uydusunun çözünürlüğü kaç metredir?",
+                secenekler: ["2 metre", "2.4 metre", "3 metre", "5 metre"],
+                dogruCevap: 1,
+                seviye: "zor",
+                kategori: "Uydu"
+            },
+            {
+                soru: "Alper Gezeravcı uzayda kaç gün kaldı?",
+                secenekler: ["8 gün", "10 gün", "12 gün", "14 gün"],
+                dogruCevap: 1,
+                seviye: "zor",
+                kategori: "Astronot"
+            },
+            {
+                soru: "Türkiye'nin ilk uydusu ne zaman fırlatıldı?",
+                secenekler: ["1990", "1994", "1996", "2000"],
+                dogruCevap: 2,
+                seviye: "zor",
+                kategori: "Tarihçe"
+            },
+            {
+                soru: "Milli Uzay Programı'nın bütçesi kaç milyar dolar?",
+                secenekler: ["1", "2", "3", "5"],
+                dogruCevap: 2,
+                seviye: "zor",
+                kategori: "Temel"
+            },
+            {
+                soru: "TÜRKSAT uydularının yörüngesi hangi tür?",
+                secenekler: ["LEO", "MEO", "GEO", "HEO"],
+                dogruCevap: 2,
+                seviye: "zor",
+                kategori: "Uydu"
+            },
+            {
+                soru: "Göktürk uyduları hangi kuruluş tarafından işletilir?",
+                secenekler: ["NASA", "ESA", "TUSAŞ", "İHA"],
+                dogruCevap: 3,
+                seviye: "zor",
+                kategori: "Uydu"
+            },
+            {
+                soru: "Milli Uzay Programı'nın en önemli hedefi hangisidir?",
+                secenekler: ["Turizm", "Uzaya bağımsız erişim", "Ticaret", "Eğitim"],
+                dogruCevap: 1,
+                seviye: "zor",
+                kategori: "Temel"
+            },
+
+            // UZMAN SORULAR
+            {
+                soru: "İMECE-1 uydusunun ağırlığı yaklaşık kaç kg?",
+                secenekler: ["100", "400", "800", "1200"],
+                dogruCevap: 2,
+                seviye: "uzman",
+                kategori: "Uydu"
+            },
+            {
+                soru: "Türkiye'nin kendi insan taşıyıcı roketi hedefi kaç ton?",
+                secenekler: ["500", "1000", "2000", "3500"],
+                dogruCevap: 2,
+                seviye: "uzman",
+                kategori: "Roket"
+            },
+            {
+                soru: "Alper Gezeravcı hangi ülkenin ile anlaşma yaptı?",
+                secenekler: ["ESA", "Roskomos", "JAXA", "Tüm"],
+                dogruCevap: 1,
+                seviye: "uzman",
+                kategori: "Astronot"
+            },
+            {
+                soru: "TÜRKSAT 5A'nın kapasitesi kaç transponder?",
+                secenekler: ["42", "50", "60", "72"],
+                dogruCevap: 2,
+                seviye: "uzman",
+                kategori: "Uydu"
+            },
+            {
+                soru: "Türkiye'nin uydu yer istasyonları hangi şehirlerde?",
+                secenekler: ["İstanbul-Ankara", "Ankara-İzmir", "Ankara-Diyarbakır", "İstanbul-İzmir"],
+                dogruCevap: 2,
+                seviye: "uzman",
+                kategori: "Altyapı"
+            },
+            {
+                soru: "Milli Uzay Programı'nda kaç farklı uydu türü yer alır?",
+                secenekler: ["3", "4", "5", "6"],
+                dogruCevap: 2,
+                seviye: "uzman",
+                kategori: "Temel"
+            },
+            {
+                soru: "Türkiye'nin 2033'e kadar planladığı uydu sayısı?",
+                secenekler: ["10", "15", "20", "25"],
+                dogruCevap: 3,
+                seviye: "uzman",
+                kategori: "10 Hedef"
+            },
+            {
+                soru: "İMECE projesine kaç ülke katılmaktadır?",
+                secenekler: ["2", "3", "4", "5"],
+                dogruCevap: 2,
+                seviye: "uzman",
+                kategori: "Proje"
+            },
+            {
+                soru: "Türkiye'nin Ay'da araştırma istasyonu hedefi?",
+                secenekler: ["2035", "2037", "2040", "2045"],
+                dogruCevap: 2,
+                seviye: "uzman",
+                kategori: "10 Hedef"
+            },
+            {
+                soru: "Türkiye Uzay Ajansı'nın merkezi nerededir?",
+                secenekler: ["İstanbul", "Ankara", "İzmir", "Gaziantep"],
+                dogruCevap: 1,
+                seviye: "uzman",
+                kategori: "Temel"
+            }
         ];
-        
-        // Oyun geliştirme notları:
-        // 1. Soru havuzunu genişlet (en az 100 soru)
-        // 2. Zamanlayıcı ekle
-        // 3. Puan hesaplama sistemi yap
-        // 4. Sonuç ekranı tasarla
-        // 5. Liderlik tablosu ekle (localStorage kullanarak)
+
+        // ============================================
+        // OYUN DEĞİŞKENLERİ
+        // ============================================
+        let oyunDurumu = {
+            zorluk: null,
+            sorular: [],
+            mevcutSoruIndex: 0,
+            skor: 0,
+            dogru: 0,
+            yanlis: 0,
+            baslangiçZamani: null,
+            suAnkiZaman: null,
+            secilenCevap: null,
+            cevapVerildi: false
+        };
+
+        // ============================================
+        // OYUN BAŞLATMA
+        // ============================================
+        function startQuiz(zorluk) {
+            oyunDurumu.zorluk = zorluk;
+            
+            // Zorluk seviyesine göre soruları filtrele
+            const filtrelenmişSorular = sorular.filter(s => s.seviye === zorluk);
+            oyunDurumu.sorular = filtrelenmişSorular.sort(() => Math.random() - 0.5);
+            
+            // Oyun sıfırla
+            oyunDurumu.mevcutSoruIndex = 0;
+            oyunDurumu.skor = 0;
+            oyunDurumu.dogru = 0;
+            oyunDurumu.yanlis = 0;
+            oyunDurumu.secilenCevap = null;
+            oyunDurumu.cevapVerildi = false;
+
+            // Ekranları değiştir
+            goToScreen('gameScreen');
+            
+            // İlk soruyu yükle
+            loadQuestion();
+        }
+
+        // ============================================
+        // SORU YÜKLEME
+        // ============================================
+        function loadQuestion() {
+            const soru = oyunDurumu.sorular[oyunDurumu.mevcutSoruIndex];
+            
+            // Başlık güncelle
+            document.getElementById('currentQuestion').textContent = oyunDurumu.mevcutSoruIndex + 1;
+            document.getElementById('totalQuestions').textContent = oyunDurumu.sorular.length;
+            
+            // Progress bar güncelle
+            const progress = ((oyunDurumu.mevcutSoruIndex + 1) / oyunDurumu.sorular.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            // Soru metni
+            document.getElementById('questionText').textContent = soru.soru;
+            
+            // Zorluk badge'i
+            const diffLabels = {
+                'kolay': 'Kolay',
+                'orta': 'Orta',
+                'zor': 'Zor',
+                'uzman': 'Uzman'
+            };
+            document.getElementById('difficultyBadge').textContent = diffLabels[oyunDurumu.zorluk];
+            
+            // Seçenekleri yükle
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+            
+            soru.secenekler.forEach((secenek, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + index)}</span>${secenek}`;
+                btn.onclick = () => selectAnswer(index);
+                btn.disabled = oyunDurumu.cevapVerildi;
+                optionsContainer.appendChild(btn);
+            });
+            
+            // Feedback sıfırla
+            document.getElementById('feedback').innerHTML = '';
+            document.getElementById('feedback').className = 'feedback';
+            document.getElementById('nextBtn').classList.remove('show');
+            
+            // Zamanlayıcı başlat
+            startTimer();
+            oyunDurumu.secilenCevap = null;
+            oyunDurumu.cevapVerildi = false;
+        }
+
+        // ============================================
+        // ZAMANLAYICI
+        // ============================================
+        let timerInterval;
+        function startTimer() {
+            clearInterval(timerInterval);
+            
+            const zorlukZamanları = {
+                'kolay': 40,
+                'orta': 30,
+                'zor': 25,
+                'uzman': 20
+            };
+            
+            let kalanZaman = zorlukZamanları[oyunDurumu.zorluk];
+            oyunDurumu.baslangiçZamani = kalanZaman;
+            
+            function updateTimer() {
+                const timerEl = document.getElementById('timer');
+                timerEl.textContent = kalanZaman + 's';
+                
+                if (kalanZaman <= 5) {
+                    timerEl.classList.add('critical');
+                } else if (kalanZaman <= 10) {
+                    timerEl.classList.add('warning');
+                    timerEl.classList.remove('critical');
+                } else {
+                    timerEl.classList.remove('warning', 'critical');
+                }
+                
+                kalanZaman--;
+                
+                if (kalanZaman < 0) {
+                    clearInterval(timerInterval);
+                    if (!oyunDurumu.cevapVerildi) {
+                        // Zaman bitti, otomatik geç
+                        oyunDurumu.cevapVerildi = true;
+                        oyunDurumu.yanlis++;
+                        showFeedback(false, "Zaman bitti! ⏰");
+                        setTimeout(() => nextQuestion(), 2000);
+                    }
+                }
+            }
+            
+            updateTimer();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // ============================================
+        // CEVAP SEÇİMİ
+        // ============================================
+        function selectAnswer(index) {
+            if (oyunDurumu.cevapVerildi) return;
+            
+            const soru = oyunDurumu.sorular[oyunDurumu.mevcutSoruIndex];
+            const isCorrect = index === soru.dogruCevap;
+            
+            oyunDurumu.secilenCevap = index;
+            oyunDurumu.cevapVerildi = true;
+            
+            // Butonları devre dışı bırak
+            document.querySelectorAll('.option-btn').forEach(btn => btn.disabled = true);
+            
+            // Seçilen buton
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons[index].classList.add('selected');
+            
+            // Doğru/yanlış göster
+            if (isCorrect) {
+                buttons[index].classList.add('correct');
+                oyunDurumu.dogru++;
+                
+                // Kalan zamana göre bonus puan
+                const zorlukZamanları = {
+                    'kolay': 40,
+                    'orta': 30,
+                    'zor': 25,
+                    'uzman': 20
+                };
+                const toplamZaman = zorlukZamanları[oyunDurumu.zorluk];
+                const kalanZaman = parseInt(document.getElementById('timer').textContent);
+                const bonus = Math.max(0, Math.floor((kalanZaman / toplamZaman) * 5));
+                
+                const puan = 10 + bonus;
+                oyunDurumu.skor += puan;
+                showFeedback(true, `✅ Doğru! +${puan} puan`);
+            } else {
+                buttons[index].classList.add('wrong');
+                buttons[soru.dogruCevap].classList.add('correct');
+                oyunDurumu.yanlis++;
+                oyunDurumu.skor = Math.max(0, oyunDurumu.skor - 5);
+                showFeedback(false, `❌ Yanlış! Doğru cevap: ${String.fromCharCode(65 + soru.dogruCevap)}`);
+            }
+            
+            // Skoru güncelle
+            document.getElementById('currentScore').textContent = oyunDurumu.skor;
+            
+            // Next butonunu göster
+            setTimeout(() => {
+                document.getElementById('nextBtn').classList.add('show');
+            }, 500);
+        }
+
+        // ============================================
+        // GERI BİLDİRİM
+        // ============================================
+        function showFeedback(isCorrect, message) {
+            const feedback = document.getElementById('feedback');
+            feedback.textContent = message;
+            feedback.className = isCorrect ? 'feedback correct active' : 'feedback wrong active';
+        }
+
+        // ============================================
+        // SONRAKI SORU
+        // ============================================
+        function nextQuestion() {
+            clearInterval(timerInterval);
+            oyunDurumu.mevcutSoruIndex++;
+            
+            if (oyunDurumu.mevcutSoruIndex < oyunDurumu.sorular.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // ============================================
+        // SONUÇLAR EKRANI
+        // ============================================
+        function showResults() {
+            clearInterval(timerInterval);
+            
+            // Başarı yüzdesi
+            const basarıYüzdesi = Math.round((oyunDurumu.dogru / oyunDurumu.sorular.length) * 100);
+            
+            // Medal
+            let medal = '🥉';
+            let medalName = 'Bronz Sertifikası';
+            if (oyunDurumu.skor >= 200) {
+                medal = '💎';
+                medalName = 'Elmas Sertifikası';
+            } else if (oyunDurumu.skor >= 150) {
+                medal = '🥇';
+                medalName = 'Altın Sertifikası';
+            } else if (oyunDurumu.skor >= 100) {
+                medal = '🥈';
+                medalName = 'Gümüş Sertifikası';
+            }
+            
+            // Mesaj
+            let message = '';
+            if (basarıYüzdesi === 100) {
+                message = 'Mükemmel! Tüm soruları doğru cevapladın! 🏆';
+            } else if (basarıYüzdesi >= 80) {
+                message = 'Harika performans! Uzay bilginde çok başarılısın! 🌟';
+            } else if (basarıYüzdesi >= 60) {
+                message = 'İyi yapıldı! Bilgilerini geliştirmek için daha fazla çalış! 💪';
+            } else if (basarıYüzdesi >= 40) {
+                message = 'Başlangıç iyi. Türkiye Uzay Programı hakkında daha çok bilgi öğren! 📚';
+            } else {
+                message = 'Tekrar deneyin! Hedefler ve tarihçe bölümünü oku. 🚀';
+            }
+            
+            // Liderlik tablosu
+            saveScore(oyunDurumu.skor);
+            const updatedLeaderboard = getLeaderboard();
+            
+            // UI güncelle
+            document.getElementById('resultMedal').textContent = medal;
+            document.getElementById('finalScore').textContent = oyunDurumu.skor;
+            document.getElementById('medalName').textContent = medalName;
+            document.getElementById('resultMessage').textContent = message;
+            document.getElementById('correctCount').textContent = oyunDurumu.dogru;
+            document.getElementById('wrongCount').textContent = oyunDurumu.yanlis;
+            document.getElementById('successRate').textContent = basarıYüzdesi + '%';
+            
+            // Liderlik tablosunu göster
+            const leaderboardList = document.getElementById('leaderboardList');
+            leaderboardList.innerHTML = '';
+            updatedLeaderboard.slice(0, 5).forEach((score, index) => {
+                const entry = document.createElement('div');
+                entry.className = 'leaderboard-entry';
+                entry.innerHTML = `
+                    <div>
+                        <span class="leaderboard-rank">#${index + 1}</span>
+                        <span style="margin-left: 1rem;">Skor</span>
+                    </div>
+                    <div class="score">${score.skor} puan</div>
+                `;
+                leaderboardList.appendChild(entry);
+            });
+            
+            goToScreen('resultsScreen');
+        }
+
+        // ============================================
+        // LIDERLIK TABLOSU
+        // ============================================
+        function saveScore(skor) {
+            const scores = JSON.parse(localStorage.getItem('quizScores') || '[]');
+            scores.push({
+                skor: skor,
+                tarih: new Date().toLocaleDateString('tr-TR'),
+                zorluk: oyunDurumu.zorluk
+            });
+            localStorage.setItem('quizScores', JSON.stringify(scores));
+        }
+
+        function getLeaderboard() {
+            const scores = JSON.parse(localStorage.getItem('quizScores') || '[]');
+            return scores.sort((a, b) => b.skor - a.skor);
+        }
+
+        // ============================================
+        // OYUN EKRANLARI
+        // ============================================
+        function goToScreen(screenName) {
+            document.querySelectorAll('.quiz-screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            document.getElementById(screenName).classList.add('active');
+        }
+
+        // ============================================
+        // OYUNU YENIDEN BAŞLAT
+        // ============================================
+        function restartQuiz() {
+            clearInterval(timerInterval);
+            goToScreen('startScreen');
+        }
+
+        // Sayfa yüklendiğinde
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🎮 Quiz oyunu yüklendi - 50+ soru hazır!');
+        });
     </script>
 </body>
 </html>
-
-<!-- 
-═══════════════════════════════════════════════════════════════════════════
-UZAY QUIZ OYUNU SAYFASI (oyun-quiz.html)
-
-BU SAYFA BOŞ BİR ŞABLONDUR - QUIZ OYUNUNUZU BU ALANA EKLEYİN
-
-Quiz ekleme adımları:
-1. .game-container içindeki .game-placeholder bölümünü silin
-2. Soru-cevap arayüzü HTML'ini ekleyin
-3. JavaScript ile soru havuzu ve oyun mantığını yazın
-4. Zamanlayıcı ve skor sistemi ekleyin
-
-Quiz özellikleri:
-- Çoktan seçmeli sorular (4 şık)
-- Her soru için zamanlayıcı
-- Doğru/yanlış feedback
-- Toplam skor gösterimi
-- Seviye seçimi (kolay/orta/zor)
-═══════════════════════════════════════════════════════════════════════════
--->
