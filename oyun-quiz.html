@@ -1014,7 +1014,7 @@
                 btn.className = 'option-btn';
                 btn.innerHTML = `<span class="option-letter">${String.fromCharCode(65 + index)}</span>${secenek}`;
                 btn.onclick = () => selectAnswer(index);
-                btn.disabled = oyunDurumu.cevapVerildi;
+                btn.disabled = false;
                 optionsContainer.appendChild(btn);
             });
             
