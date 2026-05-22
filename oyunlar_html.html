@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzay Oyunları - Türkiye Milli Uzay Programı</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <span class="rocket-icon">🚀</span>
+                <span>Türkiye Milli Uzay Programı</span>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-btn">🏠 Ana Sayfa</a></li>
+                <li><a href="program.html" class="nav-btn">📋 Program</a></li>
+                <li><a href="hedefler.html" class="nav-btn">🎯 10 Hedef</a></li>
+                <li><a href="tarihce.html" class="nav-btn">📅 Tarihçe</a></li>
+                <li><a href="oyunlar.html" class="nav-btn active">🎮 Oyunlar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">Uzay Oyunları</h1>
+        <p class="page-subtitle">Eğlenerek öğren, oynayarak keşfet! Milli Uzay Programı'nı oyunlarla deneyimle</p>
+
+        <div class="games-grid">
+            <!-- OYUN 1: ROKET FIRLATMA -->
+            <a href="oyun-roket.html" class="game-card">
+                <div class="game-icon-box" style="background: linear-gradient(135deg, #8b5cf6, #ec4899);">
+                    🚀
+                </div>
+                <h3>Roket Fırlatma Simülasyonu</h3>
+                <p>Kendi roketini tasarla ve uzaya fırlat! Yakıt hesapla, yörüngeye yerleştir ve Ay'a ulaşmayı dene. Türkiye'nin uzay hedeflerini gerçekleştir!</p>
+                <div class="game-status">🎮 Oyuna Git</div>
+            </a>
+
+            <!-- OYUN 2: UZAY QUIZ -->
+            <a href="oyun-quiz.html" class="game-card">
+                <div class="game-icon-box" style="background: linear-gradient(135deg, #3b82f6, #06b6d4);">
+                    🏆
+                </div>
+                <h3>Milli Uzay Programı Quiz</h3>
+                <p>10 hedefi ne kadar iyi biliyorsun? Türkiye'nin uzay tarihini test et! Çoktan seçmeli sorularla bilgini ölç ve en yüksek skoru yap!</p>
+                <div class="game-status">🎮 Oyuna Git</div>
+            </a>
+
+            <!-- OYUN 3: UYDU YÖRÜNGE -->
+            <a href="oyun-uydu.html" class="game-card">
+                <div class="game-icon-box" style="background: linear-gradient(135deg, #f97316, #dc2626);">
+                    🛰️
+                </div>
+                <h3>Uydu Yörünge Yerleştirme</h3>
+                <p>TÜRKSAT 6A ve İMECE gibi uyduları doğru yörüngeye yerleştir. Fizik kurallarını kullan, çarpışmalardan kaçın ve başarılı bir uydu operatörü ol!</p>
+                <div class="game-status">🎮 Oyuna Git</div>
+            </a>
+
+            <!-- OYUN 4: UZAY BULMACASI -->
+            <a href="oyun-bulmaca.html" class="game-card">
+                <div class="game-icon-box" style="background: linear-gradient(135deg, #10b981, #14b8a6);">
+                    🎯
+                </div>
+                <h3>Uzay Bulmacası</h3>
+                <p>Uzay araçlarını, uyduları ve gök cisimlerini eşleştir. Hafıza ve hızını test et! Her seviyede yeni uzay bilgileri öğren.</p>
+                <div class="game-status">🎮 Oyuna Git</div>
+            </a>
+        </div>
+
+        <div class="info-box" style="margin-top: 3rem;">
+            <h3>🎓 Oyunlarla Öğrenmenin Faydaları</h3>
+            <p>Uzay oyunları sadece eğlenceli değil, aynı zamanda öğreticidir:</p>
+            <p>✦ <strong>Fizik ve Matematik:</strong> Roket fırlatma ve yörünge hesaplamaları yaparak gerçek uzay mühendisliği prensiplerini öğrenirsin</p>
+            <p>✦ <strong>Problem Çözme:</strong> Stratejik düşünme ve hızlı karar verme becerilerini geliştirirsin</p>
+            <p>✦ <strong>Bilgi Pekiştirme:</strong> Quiz ve bulmaca oyunlarıyla Milli Uzay Programı bilgilerini kalıcı hale getirirsin</p>
+            <p>✦ <strong>İlham:</strong> Türkiye'nin uzay hedeflerini oyunlayarak gerçek bir uzay mühendisi veya astronot olma hayallerin güçlenir!</p>
+        </div>
+
+        <div class="info-box">
+            <h3>🏅 Oyun İpuçları</h3>
+            <p><strong>Roket Fırlatma için:</strong></p>
+            <p>• Yakıt miktarını dengele - çok az yakıt yörüngeye ulaşamaz, çok fazla israf olur</p>
+            <p>• Fırlatma açısı çok önemli - 45 derece genellikle en verimlidir</p>
+            <p>• Aşamalı roketler kullan - her aşamada farklı motor yakabilirsin</p>
+
+            <p style="margin-top: 1rem;"><strong>Quiz için:</strong></p>
+            <p>• Önce 10 hedefi iyice oku ve öğren</p>
+            <p>• Tarihleri ve sayıları not al - 2028, 2033 gibi önemli tarihler</p>
+            <p>• Her yanlış cevap puan kaybettirir, dikkatli ol!</p>
+
+            <p style="margin-top: 1rem;"><strong>Uydu Yörünge için:</strong></p>
+            <p>• Yerçekimi kuvvetini hesaba kat</p>
+            <p>• Hız çok önemli - çok hızlı yörüngeden çıkar, çok yavaş düşer</p>
+            <p>• Yörünge yüksekliği farklı uydu türleri için farklıdır</p>
+
+            <p style="margin-top: 1rem;"><strong>Bulmaca için:</strong></p>
+            <p>• Görsel hafızanı kullan - kartların yerlerini hatırla</p>
+            <p>• Eşleştirme yaparken strateji geliştir</p>
+            <p>• Hız önemli ama hata yapmamak daha önemli!</p>
+        </div>
+
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="index.html" class="btn btn-primary">🏠 Ana Sayfaya Dön</a>
+            <a href="hedefler.html" class="btn btn-secondary">🎯 10 Hedefi Öğren</a>
+        </div>
+    </div>
+
+    <footer>
+        <p>🚀 Türkiye Milli Uzay Programı Eğitim Platformu</p>
+        <p>Geleceğin uzay kaşifleri için • <a href="https://www.tua.gov.tr" target="_blank">TUA.gov.tr</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
+<!-- 
+═══════════════════════════════════════════════════════════════════════════
+OYUNLAR ANA SAYFASI (oyunlar.html)
+Bu sayfa 4 farklı oyunu tanıtır ve oyun sayfalarına yönlendirir.
+Her oyun kartı, ilgili oyun sayfasına (oyun-roket.html vb.) link verir.
+═══════════════════════════════════════════════════════════════════════════
+-->

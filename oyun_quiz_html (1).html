@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzay Quiz - Milli Uzay Programı</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <span class="rocket-icon">🚀</span>
+                <span>Türkiye Milli Uzay Programı</span>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-btn">🏠 Ana Sayfa</a></li>
+                <li><a href="program.html" class="nav-btn">📋 Program</a></li>
+                <li><a href="hedefler.html" class="nav-btn">🎯 10 Hedef</a></li>
+                <li><a href="tarihce.html" class="nav-btn">📅 Tarihçe</a></li>
+                <li><a href="oyunlar.html" class="nav-btn">🎮 Oyunlar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">🏆 Milli Uzay Programı Quiz</h1>
+        <p class="page-subtitle">Türkiye'nin uzay hedeflerini ne kadar iyi biliyorsun? Test et!</p>
+
+        <!-- OYUN ALANI - BU BÖLÜME QUIZ OYUNUNUZU EKLEYİN -->
+        <div class="game-container">
+            <div class="game-placeholder">
+                <div style="font-size: 5rem; margin-bottom: 2rem;">🏆</div>
+                <h2>Quiz Geliştirme Alanı</h2>
+                <p>Bu alana Milli Uzay Programı quiz oyununuzu ekleyebilirsiniz.</p>
+                <p style="margin-top: 1rem;">Önerilen özellikler:</p>
+                <ul style="list-style: none; padding: 0; color: #9ca3af;">
+                    <li>✦ Çoktan seçmeli sorular (4 şık)</li>
+                    <li>✦ 10 hedef hakkında sorular</li>
+                    <li>✦ Tarihçe ve projeler hakkında sorular</li>
+                    <li>✦ Zamanlayıcı (her soru için 30 saniye)</li>
+                    <li>✦ Puan sistemi (doğru: +10, yanlış: -5)</li>
+                    <li>✦ Seviye sistemi (kolay, orta, zor)</li>
+                    <li>✦ Liderlik tablosu</li>
+                </ul>
+                <div style="margin-top: 2rem;">
+                    <a href="oyunlar.html" class="btn btn-primary">⬅ Oyunlar Sayfasına Dön</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- ÖRNEK SORULAR -->
+        <div class="info-box" style="margin-top: 2rem;">
+            <h3>📝 Örnek Sorular</h3>
+            
+            <h4 style="margin-top: 1rem;">Soru 1: Kolay</h4>
+            <p><strong>Milli Uzay Programı kaç hedeften oluşur?</strong></p>
+            <p>A) 5<br>B) 10 ✓<br>C) 15<br>D) 20</p>
+            
+            <h4 style="margin-top: 1.5rem;">Soru 2: Orta</h4>
+            <p><strong>Türkiye'nin Ay'a ilk temas hedefi hangi yıl?</strong></p>
+            <p>A) 2025<br>B) 2028 ✓<br>C) 2030<br>D) 2033</p>
+            
+            <h4 style="margin-top: 1.5rem;">Soru 3: Zor</h4>
+            <p><strong>Türkiye Uzay Ajansı hangi tarihte kuruldu?</strong></p>
+            <p>A) 13 Aralık 2018 ✓<br>B) 7 Ağustos 2019<br>C) 9 Şubat 2021<br>D) 29 Ekim 2023</p>
+            
+            <h4 style="margin-top: 1.5rem;">Soru 4: Çok Zor</h4>
+            <p><strong>İlk yerli küçük uydu RASAT hangi yıl fırlatıldı?</strong></p>
+            <p>A) 2009<br>B) 2011 ✓<br>C) 2012<br>D) 2014</p>
+            
+            <h4 style="margin-top: 1.5rem;">Soru 5: Uzman</h4>
+            <p><strong>Göktürk-2 uydusunun çözünürlüğü nedir?</strong></p>
+            <p>A) 5 metre<br>B) 2.5 metre ✓<br>C) 1 metre<br>D) 0.5 metre</p>
+        </div>
+
+        <!-- OYUN KURALLARI -->
+        <div class="info-box">
+            <h3>📋 Oyun Kuralları</h3>
+            <p><strong>Puanlama:</strong></p>
+            <p>• Doğru cevap: +10 puan</p>
+            <p>• Yanlış cevap: -5 puan</p>
+            <p>• Hızlı cevap bonusu: +1-5 puan (kalan süreye göre)</p>
+            <p>• Cevapsız geçme: 0 puan</p>
+            
+            <p style="margin-top: 1rem;"><strong>Seviyeler:</strong></p>
+            <p>• <span style="color: #10b981;">Kolay:</span> 10 soru, 40 saniye, temel bilgiler</p>
+            <p>• <span style="color: #fbbf24;">Orta:</span> 15 soru, 30 saniye, detaylı bilgiler</p>
+            <p>• <span style="color: #f97316;">Zor:</span> 20 soru, 25 saniye, tarihler ve sayılar</p>
+            <p>• <span style="color: #dc2626;">Uzman:</span> 25 soru, 20 saniye, tüm detaylar</p>
+            
+            <p style="margin-top: 1rem;"><strong>Rozetler:</strong></p>
+            <p>🥉 Bronz: 50+ puan</p>
+            <p>🥈 Gümüş: 100+ puan</p>
+            <p>🥇 Altın: 150+ puan</p>
+            <p>💎 Elmas: 200+ puan</p>
+            <p>🏆 Ustaya: Tüm soruları doğru cevapla!</p>
+        </div>
+
+        <!-- SORU HAVUZU ÖRNEKLERİ -->
+        <div class="info-box">
+            <h3>🎯 Soru Kategorileri</h3>
+            <p><strong>1. 10 Hedef:</strong> Her hedefin adı, amacı, kazanımları</p>
+            <p><strong>2. Tarihçe:</strong> Önemli tarihler, projeler, ilkler</p>
+            <p><strong>3. Uydu Projeleri:</strong> TÜRKSAT, Göktürk, İMECE, RASAT</p>
+            <p><strong>4. Türkiye Uzay Ajansı:</strong> Kuruluş, görevler, hedefler</p>
+            <p><strong>5. Dünya Uzay Yarışı:</strong> Genel bilgiler, karşılaştırmalar</p>
+            <p><strong>6. Astronomi:</strong> Gözlemevleri, teleskoplar</p>
+            <p><strong>7. Teknoloji:</strong> Roketler, uydu sistemleri, yörüngeler</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>🚀 Türkiye Milli Uzay Programı Eğitim Platformu</p>
+        <p>Geleceğin uzay kaşifleri için • <a href="https://www.tua.gov.tr" target="_blank">TUA.gov.tr</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <!-- QUIZ JAVASCRIPT KODLARI BURAYA -->
+    <script>
+        // Bu alana quiz oyununun JavaScript kodlarını ekleyebilirsiniz
+        
+        console.log('🏆 Milli Uzay Programı Quiz yüklendi');
+        
+        // Örnek soru havuzu yapısı:
+        const ornekSoruHavuzu = [
+            {
+                soru: "Milli Uzay Programı hangi yıl açıklandı?",
+                secenekler: ["2019", "2020", "2021", "2022"],
+                dogruCevap: 2, // index: 2021
+                seviye: "kolay",
+                kategori: "Tarihçe"
+            },
+            {
+                soru: "İlk Türk astronot kimdir?",
+                secenekler: ["Alper Gezeravcı", "Tuva Cihangir Atasever", "Mehmet Öz", "Aziz Sancar"],
+                dogruCevap: 0,
+                seviye: "kolay",
+                kategori: "Astronot"
+            },
+            // Daha fazla soru eklenebilir...
+        ];
+        
+        // Oyun geliştirme notları:
+        // 1. Soru havuzunu genişlet (en az 100 soru)
+        // 2. Zamanlayıcı ekle
+        // 3. Puan hesaplama sistemi yap
+        // 4. Sonuç ekranı tasarla
+        // 5. Liderlik tablosu ekle (localStorage kullanarak)
+    </script>
+</body>
+</html>
+
+<!-- 
+═══════════════════════════════════════════════════════════════════════════
+UZAY QUIZ OYUNU SAYFASI (oyun-quiz.html)
+
+BU SAYFA BOŞ BİR ŞABLONDUR - QUIZ OYUNUNUZU BU ALANA EKLEYİN
+
+Quiz ekleme adımları:
+1. .game-container içindeki .game-placeholder bölümünü silin
+2. Soru-cevap arayüzü HTML'ini ekleyin
+3. JavaScript ile soru havuzu ve oyun mantığını yazın
+4. Zamanlayıcı ve skor sistemi ekleyin
+
+Quiz özellikleri:
+- Çoktan seçmeli sorular (4 şık)
+- Her soru için zamanlayıcı
+- Doğru/yanlış feedback
+- Toplam skor gösterimi
+- Seviye seçimi (kolay/orta/zor)
+═══════════════════════════════════════════════════════════════════════════
+-->

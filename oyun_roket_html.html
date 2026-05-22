@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roket Fırlatma Simülasyonu - Milli Uzay Programı</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <span class="rocket-icon">🚀</span>
+                <span>Türkiye Milli Uzay Programı</span>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-btn">🏠 Ana Sayfa</a></li>
+                <li><a href="program.html" class="nav-btn">📋 Program</a></li>
+                <li><a href="hedefler.html" class="nav-btn">🎯 10 Hedef</a></li>
+                <li><a href="tarihce.html" class="nav-btn">📅 Tarihçe</a></li>
+                <li><a href="oyunlar.html" class="nav-btn">🎮 Oyunlar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">🚀 Roket Fırlatma Simülasyonu</h1>
+        <p class="page-subtitle">Kendi roketini tasarla, uzaya fırlat ve Ay'a ulaş!</p>
+
+        <!-- OYUN ALANI - BU BÖLÜME OYUNUNUZU EKLEYİN -->
+        <div class="game-container">
+            <div class="game-placeholder">
+                <div style="font-size: 5rem; margin-bottom: 2rem;">🚀</div>
+                <h2>Oyun Geliştirme Alanı</h2>
+                <p>Bu alana roket fırlatma oyununuzu ekleyebilirsiniz.</p>
+                <p style="margin-top: 1rem;">Önerilen özellikler:</p>
+                <ul style="list-style: none; padding: 0; color: #9ca3af;">
+                    <li>✦ Roket tasarımı (aşama sayısı, yakıt tipi)</li>
+                    <li>✦ Fırlatma parametreleri (açı, güç, zamanlama)</li>
+                    <li>✦ Fizik simülasyonu (yerçekimi, hava direnci)</li>
+                    <li>✦ Yörünge hesaplamaları</li>
+                    <li>✦ Ay'a iniş simülasyonu</li>
+                    <li>✦ Skor sistemi (yakıt verimliliği, başarı oranı)</li>
+                </ul>
+                <div style="margin-top: 2rem;">
+                    <a href="oyunlar.html" class="btn btn-primary">⬅ Oyunlar Sayfasına Dön</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- OYUN HAKKINDA BİLGİ -->
+        <div class="info-box" style="margin-top: 2rem;">
+            <h3>📚 Oyun Hakkında</h3>
+            <p>Bu oyunda Türkiye'nin Ay misyonunu gerçekleştiriyorsun! Hibrit roket motorunu kullanarak uzay aracını önce Dünya yörüngesine, sonra Ay yörüngesine yerleştirmelisin.</p>
+            
+            <h4 style="margin-top: 1.5rem;">🎯 Hedefler</h4>
+            <p>1. Roketi başarıyla Dünya yörüngesine yerleştir</p>
+            <p>2. Ay'a transfer yörüngesine geç</p>
+            <p>3. Ay yörüngesine gir</p>
+            <p>4. Ay'a yumuşak iniş yap</p>
+            
+            <h4 style="margin-top: 1.5rem;">🔬 Öğreneceklerin</h4>
+            <p>• Roket mühendisliği temelleri</p>
+            <p>• Yörünge mekaniği</p>
+            <p>• Yakıt hesaplamaları</p>
+            <p>• Hohmann transfer yörüngesi</p>
+            <p>• Uzay navigasyonu</p>
+        </div>
+
+        <!-- OYUN İPUÇLARI -->
+        <div class="info-box">
+            <h3>💡 İpuçları</h3>
+            <p><strong>Başlangıç için:</strong></p>
+            <p>• İlk fırlatmanda 90 derece dikey fırlat</p>
+            <p>• 10 km yüksekliğe ulaştıktan sonra 45 dereceye yatır</p>
+            <p>• Yörünge hızına (7.8 km/s) ulaşana kadar yakıt ver</p>
+            
+            <p style="margin-top: 1rem;"><strong>Ay'a gitmek için:</strong></p>
+            <p>• Dünya yörüngesinde iken doğru noktada Ay'a doğru hızlan</p>
+            <p>• Transfer yörüngesi yaklaşık 3 gün sürer</p>
+            <p>• Ay'a yaklaşırken fren yap ve yörüngeye gir</p>
+            
+            <p style="margin-top: 1rem;"><strong>İniş için:</strong></p>
+            <p>• Yavaş ve kontrollü in</p>
+            <p>• Dikey hızı 5 m/s altında tut</p>
+            <p>• Yatay hızı minimize et</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>🚀 Türkiye Milli Uzay Programı Eğitim Platformu</p>
+        <p>Geleceğin uzay kaşifleri için • <a href="https://www.tua.gov.tr" target="_blank">TUA.gov.tr</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <!-- OYUN JAVASCRIPT KODLARI BURAYA -->
+    <script>
+        // Bu alana oyunun JavaScript kodlarını ekleyebilirsiniz
+        // Örnek: Canvas ile roket çizimi, fizik hesaplamaları, kontroller vb.
+        
+        console.log('🚀 Roket Fırlatma Simülasyonu yüklendi');
+        
+        // Oyun geliştirme notları:
+        // 1. Canvas veya HTML5 kullanarak roket ve uzay görsellerini çiz
+        // 2. Fizik motoru ekle (yerçekimi, hız, ivme hesaplamaları)
+        // 3. Kontrol sistemi oluştur (klavye/fare ile roket kontrolü)
+        // 4. Skor ve başarı sistemi ekle
+        // 5. Seviye sistemi oluştur (kolay, orta, zor)
+    </script>
+</body>
+</html>
+
+<!-- 
+═══════════════════════════════════════════════════════════════════════════
+ROKET FIRLATMA OYUNU SAYFASI (oyun-roket.html)
+
+BU SAYFA BOŞ BİR ŞABLONDUR - OYUNUNUZU BU ALANA EKLEYİN
+
+Oyun ekleme adımları:
+1. .game-container içindeki .game-placeholder bölümünü silin
+2. Kendi oyun HTML kodlarınızı ekleyin (canvas, div'ler vb.)
+3. Sayfanın altındaki <script> bölümüne JavaScript kodlarınızı yazın
+4. Gerekirse ek CSS stilleri ekleyin
+
+Öneriler:
+- Canvas kullanarak 2D roket simülasyonu yapabilirsiniz
+- Matter.js veya Phaser.js gibi oyun motorları kullanabilirsiniz
+- Basit bir HTML/CSS animasyonu da yapabilirsiniz
+═══════════════════════════════════════════════════════════════════════════
+-->

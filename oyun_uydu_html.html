@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uydu Yörünge Yerleştirme - Milli Uzay Programı</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <span class="rocket-icon">🚀</span>
+                <span>Türkiye Milli Uzay Programı</span>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-btn">🏠 Ana Sayfa</a></li>
+                <li><a href="program.html" class="nav-btn">📋 Program</a></li>
+                <li><a href="hedefler.html" class="nav-btn">🎯 10 Hedef</a></li>
+                <li><a href="tarihce.html" class="nav-btn">📅 Tarihçe</a></li>
+                <li><a href="oyunlar.html" class="nav-btn">🎮 Oyunlar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">🛰️ Uydu Yörünge Yerleştirme</h1>
+        <p class="page-subtitle">TÜRKSAT 6A ve İMECE gibi uyduları doğru yörüngeye yerleştir!</p>
+
+        <!-- OYUN ALANI -->
+        <div class="game-container">
+            <div class="game-placeholder">
+                <div style="font-size: 5rem; margin-bottom: 2rem;">🛰️</div>
+                <h2>Uydu Simülasyonu Geliştirme Alanı</h2>
+                <p>Bu alana uydu yörünge yerleştirme oyununuzu ekleyebilirsiniz.</p>
+                <p style="margin-top: 1rem;">Önerilen özellikler:</p>
+                <ul style="list-style: none; padding: 0; color: #9ca3af;">
+                    <li>✦ Dünya ve yörüngelerin görselleştirilmesi</li>
+                    <li>✦ Farklı uydu tipleri (haberleşme, keşif, küp uydu)</li>
+                    <li>✦ Yörünge hesaplamaları (LEO, MEO, GEO)</li>
+                    <li>✦ Hız ve açı ayarları</li>
+                    <li>✦ Yerçekimi simülasyonu</li>
+                    <li>✦ Çarpışma uyarı sistemi</li>
+                    <li>✦ Yakıt yönetimi</li>
+                </ul>
+                <div style="margin-top: 2rem;">
+                    <a href="oyunlar.html" class="btn btn-primary">⬅ Oyunlar Sayfasına Dön</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- YÖRÜNGE TİPLERİ -->
+        <div class="info-box" style="margin-top: 2rem;">
+            <h3>🌍 Yörünge Tipleri</h3>
+            
+            <h4>LEO - Alçak Dünya Yörüngesi (Low Earth Orbit)</h4>
+            <p>• <strong>Yükseklik:</strong> 200-2000 km</p>
+            <p>• <strong>Hız:</strong> ~7.8 km/s</p>
+            <p>• <strong>Periyot:</strong> 90-120 dakika</p>
+            <p>• <strong>Kullanım:</strong> Keşif uyduları, küp uydular, uzay istasyonu</p>
+            <p>• <strong>Örnekler:</strong> Göktürk-1, Göktürk-2, İMECE, RASAT</p>
+            
+            <h4 style="margin-top: 1.5rem;">MEO - Orta Dünya Yörüngesi (Medium Earth Orbit)</h4>
+            <p>• <strong>Yükseklik:</strong> 2000-35,786 km</p>
+            <p>• <strong>Hız:</strong> ~3-7 km/s</p>
+            <p>• <strong>Periyot:</strong> 2-24 saat</p>
+            <p>• <strong>Kullanım:</strong> Navigasyon uyduları, bilimsel araştırma</p>
+            <p>• <strong>Örnekler:</strong> GPS, GLONASS, Galileo uyduları</p>
+            
+            <h4 style="margin-top: 1.5rem;">GEO - Jeosenkron Yörünge (Geostationary Earth Orbit)</h4>
+            <p>• <strong>Yükseklik:</strong> 35,786 km (ekvatorda)</p>
+            <p>• <strong>Hız:</strong> ~3.07 km/s</p>
+            <p>• <strong>Periyot:</strong> 24 saat (Dünya ile senkron)</p>
+            <p>• <strong>Kullanım:</strong> Haberleşme uyduları, meteoroloji uyduları</p>
+            <p>• <strong>Örnekler:</strong> TÜRKSAT 3A, 4A, 4B, 5A, 5B, 6A</p>
+        </div>
+
+        <!-- UYDU PROJELERİ -->
+        <div class="info-box">
+            <h3>🛰️ Türkiye'nin Uydu Projeleri</h3>
+            
+            <h4>TÜRKSAT 6A - İlk Yerli Haberleşme Uydusu</h4>
+            <p>• Yörünge: GEO (35,786 km)</p>
+            <p>• Ağırlık: ~3,500 kg</p>
+            <p>• Fırlatma: 2022 planlandı</p>
+            <p>• Özellik: Tamamen yerli ve milli tasarım</p>
+            
+            <h4 style="margin-top: 1.5rem;">İMECE - Yerli Keşif Uydusu</h4>
+            <p>• Yörünge: LEO (650 km)</p>
+            <p>• Çözünürlük: Metre altı</p>
+            <p>• Fırlatma: 2022 planlandı</p>
+            <p>• Özellik: Yerli alt sistemler</p>
+            
+            <h4 style="margin-top: 1.5rem;">Göktürk-1 ve Göktürk-2</h4>
+            <p>• Yörünge: LEO (650-700 km)</p>
+            <p>• Göktürk-1: Metre altı çözünürlük</p>
+            <p>• Göktürk-2: 2.5 metre çözünürlük</p>
+            <p>• Kullanım: Keşif ve gözetleme</p>
+            
+            <h4 style="margin-top: 1.5rem;">RASAT - İlk Yerli Küçük Uydu</h4>
+            <p>• Yörünge: LEO (700 km)</p>
+            <p>• Ağırlık: ~100 kg</p>
+            <p>• Fırlatma: 2011</p>
+            <p>• Özellik: Tamamen TÜBİTAK UZAY tasarımı</p>
+        </div>
+
+        <!-- OYUN KURALLARI -->
+        <div class="info-box">
+            <h3>📋 Görev Açıklaması</h3>
+            <p><strong>Amaç:</strong> Uyduyu hedef yörüngeye başarıyla yerleştir</p>
+            
+            <p style="margin-top: 1rem;"><strong>Adımlar:</strong></p>
+            <p>1. Uydu tipini seç (haberleşme, keşif, küp uydu)</p>
+            <p>2. Hedef yörüngeyi belirle (LEO, MEO veya GEO)</p>
+            <p>3. Fırlatma parametrelerini ayarla (hız, açı)</p>
+            <p>4. Roketi fırlat ve yörüngeye yerleştir</p>
+            <p>5. Gerekirse yörünge düzeltme yap</p>
+            
+            <p style="margin-top: 1rem;"><strong>Başarı Kriterleri:</strong></p>
+            <p>✦ Doğru yörünge yüksekliği (±10 km tolerans)</p>
+            <p>✦ Doğru yörünge hızı (±0.1 km/s tolerans)</p>
+            <p>✦ Minimum yakıt kullanımı (maksimum verimlilik)</p>
+            <p>✦ Çarpışmasız yerleştirme (mevcut uydulardan kaçın)</p>
+            
+            <p style="margin-top: 1rem;"><strong>Puanlama:</strong></p>
+            <p>• Doğru yörünge: +50 puan</p>
+            <p>• Yakıt verimliliği: +0-30 puan</p>
+            <p>• Hız bonusu: +0-20 puan</p>
+            <p>• Çarpışma: -50 puan</p>
+        </div>
+
+        <!-- FİZİK BİLGİLERİ -->
+        <div class="info-box">
+            <h3>🔬 Öğreneceklerin - Yörünge Fiziği</h3>
+            
+            <h4>1. Yörünge Hızı Formülü</h4>
+            <p>v = √(GM/r)</p>
+            <p>• v: Yörünge hızı</p>
+            <p>• G: Evrensel çekim sabiti</p>
+            <p>• M: Dünya'nın kütlesi</p>
+            <p>• r: Merkez uzaklığı</p>
+            
+            <h4 style="margin-top: 1.5rem;">2. Yörünge Periyodu</h4>
+            <p>T = 2π√(r³/GM)</p>
+            <p>LEO: ~90 dakika</p>
+            <p>GEO: 24 saat</p>
+            
+            <h4 style="margin-top: 1.5rem;">3. Kaçış Hızı</h4>
+            <p>v_kaçış = √(2GM/r) = 11.2 km/s (Dünya için)</p>
+            
+            <h4 style="margin-top: 1.5rem;">4. Hohmann Transfer</h4>
+            <p>İki yörünge arasında en verimli geçiş yöntemi</p>
+            <p>• Eliptik transfer yörüngesi kullanılır</p>
+            <p>• İki yanma noktası: apsis noktalarında</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>🚀 Türkiye Milli Uzay Programı Eğitim Platformu</p>
+        <p>Geleceğin uzay kaşifleri için • <a href="https://www.tua.gov.tr" target="_blank">TUA.gov.tr</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <!-- UYDU YÖRÜNGE JAVASCRIPT KODLARI -->
+    <script>
+        console.log('🛰️ Uydu Yörünge Yerleştirme oyunu yüklendi');
+        
+        // Fizik sabitleri
+        const G = 6.674e-11; // Evrensel çekim sabiti (m³ kg⁻¹ s⁻²)
+        const M_earth = 5.972e24; // Dünya kütlesi (kg)
+        const R_earth = 6371000; // Dünya yarıçapı (m)
+        
+        // Yörünge hesaplama fonksiyonları
+        function yörüngeHızıHesapla(yükseklik_km) {
+            const r = (R_earth + yükseklik_km * 1000);
+            const v = Math.sqrt(G * M_earth / r);
+            return v / 1000; // km/s cinsinden
+        }
+        
+        function yörüngePeriyoduHesapla(yükseklik_km) {
+            const r = (R_earth + yükseklik_km * 1000);
+            const T = 2 * Math.PI * Math.sqrt(Math.pow(r, 3) / (G * M_earth));
+            return T / 60; // dakika cinsinden
+        }
+        
+        // Örnek hesaplamalar
+        console.log('LEO (400 km) hızı:', yörüngeHızıHesapla(400).toFixed(2), 'km/s');
+        console.log('GEO (35,786 km) hızı:', yörüngeHızıHesapla(35786).toFixed(2), 'km/s');
+        console.log('LEO periyodu:', yörüngePeriyoduHesapla(400).toFixed(0), 'dakika');
+        
+        // Oyun geliştirme notları:
+        // 1. Canvas ile Dünya ve yörüngeleri çiz
+        // 2. Uydu objesi oluştur ve fizik simülasyonu ekle
+        // 3. Fare veya klavye ile kontrol sistemi yap
+        // 4. Çarpışma tespit sistemi ekle (diğer uydular ile)
+        // 5. Yakıt göstergesi ve yörünge bilgileri göster
+    </script>
+</body>
+</html>
+
+<!-- 
+═══════════════════════════════════════════════════════════════════════════
+UYDU YÖRÜNGE OYUNU SAYFASI (oyun-uydu.html)
+
+BU SAYFA BOŞ BİR ŞABLONDUR - UYDU OYUNUNUZU BU ALANA EKLEYİN
+
+Oyun ekleme önerileri:
+- Canvas kullanarak Dünya'yı ve yörüngeleri çizin
+- Gerçek fizik hesaplamalarını kullanın (yukarıdaki formüller)
+- Uydu hareketini animasyon yapın
+- Kullanıcı kontrollerini ekleyin (ivme, yön değişimi)
+═══════════════════════════════════════════════════════════════════════════
+-->

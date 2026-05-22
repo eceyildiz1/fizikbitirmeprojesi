@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Uzay Bulmacası - Milli Uzay Programı</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+
+    <nav>
+        <div class="nav-container">
+            <div class="logo">
+                <span class="rocket-icon">🚀</span>
+                <span>Türkiye Milli Uzay Programı</span>
+            </div>
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()">☰</button>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="nav-btn">🏠 Ana Sayfa</a></li>
+                <li><a href="program.html" class="nav-btn">📋 Program</a></li>
+                <li><a href="hedefler.html" class="nav-btn">🎯 10 Hedef</a></li>
+                <li><a href="tarihce.html" class="nav-btn">📅 Tarihçe</a></li>
+                <li><a href="oyunlar.html" class="nav-btn">🎮 Oyunlar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">🎯 Uzay Bulmacası</h1>
+        <p class="page-subtitle">Hafızanı test et! Uzay araçlarını, uyduları ve gök cisimlerini eşleştir</p>
+
+        <!-- OYUN ALANI -->
+        <div class="game-container">
+            <div class="game-placeholder">
+                <div style="font-size: 5rem; margin-bottom: 2rem;">🎯</div>
+                <h2>Bulmaca Geliştirme Alanı</h2>
+                <p>Bu alana uzay bulmacası oyununuzu ekleyebilirsiniz.</p>
+                <p style="margin-top: 1rem;">Önerilen oyun tipleri:</p>
+                <ul style="list-style: none; padding: 0; color: #9ca3af;">
+                    <li>✦ Hafıza Kartları (Memory Game)</li>
+                    <li>✦ Eşleştirme (Matching Game)</li>
+                    <li>✦ Kelime Bulmaca (Crossword)</li>
+                    <li>✦ Puzzle (Jigsaw)</li>
+                    <li>✦ Kelime Avı (Word Search)</li>
+                </ul>
+                <p style="margin-top: 1rem;">Önerilen özellikler:</p>
+                <ul style="list-style: none; padding: 0; color: #9ca3af;">
+                    <li>✦ Farklı zorluk seviyeleri</li>
+                    <li>✦ Zamanlayıcı</li>
+                    <li>✦ Hamle sayacı</li>
+                    <li>✦ Skor sistemi</li>
+                    <li>✦ Sesli efektler</li>
+                </ul>
+                <div style="margin-top: 2rem;">
+                    <a href="oyunlar.html" class="btn btn-primary">⬅ Oyunlar Sayfasına Dön</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- OYUN TİPLERİ -->
+        <div class="info-box" style="margin-top: 2rem;">
+            <h3>🎮 Oyun Çeşitleri</h3>
+            
+            <h4>1. Hafıza Kartları (Memory Game) - Önerilen</h4>
+            <p>Klasik eşleştirme oyunu. Kartları çevir ve aynı görselleri bul!</p>
+            <p><strong>Kartlar:</strong></p>
+            <p>• 🚀 Roketler: Falcon 9, Ariane 5, Soyuz, Atlas V</p>
+            <p>• 🛰️ Uydular: TÜRKSAT, Göktürk, İMECE, RASAT</p>
+            <p>• 👨‍🚀 Astronotlar: Alper Gezeravcı, Yuri Gagarin, Neil Armstrong</p>
+            <p>• 🌙 Gök Cisimleri: Ay, Mars, Jüpiter, Satürn</p>
+            <p>• 🏢 Kurumlar: TUA, NASA, ESA, JAXA</p>
+            
+            <h4 style="margin-top: 1.5rem;">2. Kelime-Resim Eşleştirme</h4>
+            <p>Uzay terimlerini görselleriyle eşleştir</p>
+            <p>• Uydu → 🛰️</p>
+            <p>• Roket → 🚀</p>
+            <p>• Astronot → 👨‍🚀</p>
+            <p>• Teleskop → 🔭</p>
+            
+            <h4 style="margin-top: 1.5rem;">3. Kelime Bulmaca</h4>
+            <p>10 hedefle ilgili kelimeleri bul</p>
+            <p>Örnek kelimeler: AYGOREVI, UYDU, TURKSAT, ROKET, YÖRÜNGE</p>
+            
+            <h4 style="margin-top: 1.5rem;">4. Puzzle</h4>
+            <p>Türkiye'nin uzay projelerinin fotoğraflarını birleştir</p>
+            <p>• TÜRKSAT 6A montajı</p>
+            <p>• Göktürk-2 fırlatma</p>
+            <p>• TUG Gözlemevi</p>
+        </div>
+
+        <!-- HAFIZA OYUNU DETAYI -->
+        <div class="info-box">
+            <h3>🃏 Hafıza Kartları Oyun Kuralları</h3>
+            
+            <p><strong>Nasıl Oynanır?</strong></p>
+            <p>1. Tüm kartlar ters çevrilmiş olarak başlar</p>
+            <p>2. Her turda 2 kart çevirirsin</p>
+            <p>3. Kartlar aynıysa, kartlar açık kalır (puan kazanırsın)</p>
+            <p>4. Kartlar farklıysa, tekrar kapanır</p>
+            <p>5. Tüm eşleşmeleri bulduğunda oyun biter</p>
+            
+            <p style="margin-top: 1rem;"><strong>Seviyeler:</strong></p>
+            <p>• <span style="color: #10b981;">Kolay:</span> 4x3 = 12 kart (6 eş)</p>
+            <p>• <span style="color: #fbbf24;">Orta:</span> 4x4 = 16 kart (8 eş)</p>
+            <p>• <span style="color: #f97316;">Zor:</span> 6x4 = 24 kart (12 eş)</p>
+            <p>• <span style="color: #dc2626;">Uzman:</span> 6x6 = 36 kart (18 eş)</p>
+            
+            <p style="margin-top: 1rem;"><strong>Puanlama:</strong></p>
+            <p>• Her eşleşme: +10 puan</p>
+            <p>• İlk denemede eşleşme: +5 bonus</p>
+            <p>• Hız bonusu: (300 - geçen_saniye) puan</p>
+            <p>• Minimum hamle bonusu: +50 puan</p>
+            
+            <p style="margin-top: 1rem;"><strong>Yıldızlar:</strong></p>
+            <p>⭐ 1 Yıldız: Oyunu bitir</p>
+            <p>⭐⭐ 2 Yıldız: 60 saniyeden kısa sürede bitir</p>
+            <p>⭐⭐⭐ 3 Yıldız: 40 saniyeden kısa, minimum hamle ile bitir</p>
+        </div>
+
+        <!-- KART İÇERİKLERİ -->
+        <div class="info-box">
+            <h3>🎴 Kart Görselleri ve Bilgileri</h3>
+            
+            <p><strong>Türk Uyduları Seti:</strong></p>
+            <p>🛰️ TÜRKSAT 6A - İlk yerli haberleşme uydusu</p>
+            <p>🛰️ İMECE - Metre altı çözünürlükte yerli uydu</p>
+            <p>🛰️ Göktürk-1 - Keşif uydusu (metre altı)</p>
+            <p>🛰️ Göktürk-2 - Keşif uydusu (2.5m)</p>
+            <p>🛰️ RASAT - İlk tamamen yerli küçük uydu</p>
+            <p>🛰️ BİLSAT - İlk yer gözlem uydusu</p>
+            
+            <p style="margin-top: 1rem;"><strong>10 Hedef Seti:</strong></p>
+            <p>🌙 1 - Ay Görevi</p>
+            <p>🛰️ 2 - Uydu Üretimi</p>
+            <p>📡 3 - Konumlama Sistemi</p>
+            <p>🚀 4 - Uzaya Erişim</p>
+            <p>🌌 5 - Uzay Havası</p>
+            <p>🔭 6 - Uzay Nesneleri Takibi</p>
+            <p>🏭 7 - Uzay Sanayi Ekosistemi</p>
+            <p>🏢 8 - Teknoloji Geliştirme Bölgesi</p>
+            <p>👨‍🎓 9 - İnsan Kaynağı Geliştirilmesi</p>
+            <p>👨‍🚀 10 - Türk Astronot Misyonu</p>
+            
+            <p style="margin-top: 1rem;"><strong>Gök Cisimleri Seti:</strong></p>
+            <p>🌙 Ay - Türkiye'nin 2028 hedefi</p>
+            <p>🔴 Mars - Gelecek hedef</p>
+            <p>🌍 Dünya - Ev gezegenimiz</p>
+            <p>⭐ Güneş - Sistemimizin merkezi</p>
+            <p>🪐 Satürn - Halkalı gezegen</p>
+            <p>🌌 Samanyolu - Galaksimiz</p>
+        </div>
+
+        <!-- İPUÇLARI -->
+        <div class="info-box">
+            <h3>💡 Strateji İpuçları</h3>
+            <p><strong>Hafıza Teknikleri:</strong></p>
+            <p>• Kartları satır satır veya sütun sütun sistematik çevir</p>
+            <p>• İlk turda mümkün olduğunca çok kart gör</p>
+            <p>• Kartların konumlarını kafanda gruplandır (sol üst, sağ alt vb.)</p>
+            <p>• Benzer kartları hatırlamak için görsel ipuçları kullan</p>
+            
+            <p style="margin-top: 1rem;"><strong>Hız İpuçları:</strong></p>
+            <p>• Kart çevirme animasyonları bitmeyi bekleme</p>
+            <p>• Emin olduğun eşleşmelere öncelik ver</p>
+            <p>• Tahmin yerine hatırlamaya odaklan</p>
+            
+            <p style="margin-top: 1rem;"><strong>Minimum Hamle için:</strong></p>
+            <p>• Her kart çiftini sadece bir kez çevir</p>
+            <p>• İlk turda tüm kartları sistematik olarak gör</p>
+            <p>• Rastgele deneme yapma, düşünerek oyna</p>
+        </div>
+    </div>
+
+    <footer>
+        <p>🚀 Türkiye Milli Uzay Programı Eğitim Platformu</p>
+        <p>Geleceğin uzay kaşifleri için • <a href="https://www.tua.gov.tr" target="_blank">TUA.gov.tr</a></p>
+    </footer>
+
+    <script src="script.js"></script>
+
+    <!-- BULMACA JAVASCRIPT KODLARI -->
+    <script>
+        console.log('🎯 Uzay Bulmacası yüklendi');
+        
+        // Örnek hafıza kartları oyunu için kart seti
+        const kartSeti = [
+            { id: 1, isim: 'TÜRKSAT 6A', emoji: '🛰️', kategori: 'uydu' },
+            { id: 2, isim: 'İMECE', emoji: '🛰️', kategori: 'uydu' },
+            { id: 3, isim: 'Göktürk-1', emoji: '🛰️', kategori: 'uydu' },
+            { id: 4, isim: 'Roket', emoji: '🚀', kategori: 'araç' },
+            { id: 5, isim: 'Ay', emoji: '🌙', kategori: 'gökCismi' },
+            { id: 6, isim: 'Mars', emoji: '🔴', kategori: 'gökCismi' },
+            { id: 7, isim: 'Alper Gezeravcı', emoji: '👨‍🚀', kategori: 'astronot' },
+            { id: 8, isim: 'Teleskop', emoji: '🔭', kategori: 'alet' },
+        ];
+        
+        // Kartları karıştırma fonksiyonu
+        function kartlariKaristir(kartlar) {
+            // Her karttan 2 tane oluştur (eşleşme için)
+            const ciftKartlar = [...kartlar, ...kartlar];
+            
+            // Karıştır (Fisher-Yates algoritması)
+            for (let i = ciftKartlar.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [ciftKartlar[i], ciftKartlar[j]] = [ciftKartlar[j], ciftKartlar[i]];
+            }
+            
+            return ciftKartlar;
+        }
+        
+        // Oyun geliştirme notları:
+        // 1. HTML ile kart gridini oluştur
+        // 2. Kartları karıştır ve yerleştir
+        // 3. Kart tıklama olaylarını dinle
+        // 4. Eşleşme kontrolü yap
+        // 5. Zamanlayıcı ve hamle sayacı ekle
+        // 6. Oyun bittiğinde sonuç ekranı göster
+        
+        console.log('Örnek karışık kartlar:', kartlariKaristir(kartSeti.slice(0, 4)));
+    </script>
+</body>
+</html>
+
+<!-- 
+═══════════════════════════════════════════════════════════════════════════
+UZAY BULMACASI OYUNU SAYFASI (oyun-bulmaca.html)
+
+BU SAYFA BOŞ BİR ŞABLONDUR - BULMACA OYUNUNUZU BU ALANA EKLEYİN
+
+Oyun önerileri:
+- Hafıza kartları oyunu (Memory Game) en popüler seçenek
+- CSS Grid ile kart düzeni oluşturun
+- Flip animasyonu ekleyin
+- Eşleşme kontrolü yapın
+- Zamanlayıcı ve skor sistemi ekleyin
+
+Örnek kart HTML yapısı:
+<div class="card" data-id="1">
+  <div class="card-front">?</div>
+  <div class="card-back">🛰️</div>
+</div>
+═══════════════════════════════════════════════════════════════════════════
+-->
