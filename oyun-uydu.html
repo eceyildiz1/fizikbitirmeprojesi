@@ -5,6 +5,344 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Uydu Yörünge Yerleştirme - Milli Uzay Programı</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+        .game-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 320px;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .canvas-container {
+            background: linear-gradient(135deg, #000814 0%, #001d3d 50%, #003566 100%);
+            border-radius: 10px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 650px;
+            border: 3px solid #ffd60a;
+            box-shadow: 0 0 30px rgba(255, 214, 10, 0.3);
+        }
+
+        canvas {
+            border: 2px solid #ffd60a;
+            background: radial-gradient(circle, rgba(0, 20, 40, 0.9) 0%, rgba(0, 8, 20, 0.95) 100%);
+            cursor: crosshair;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .game-info {
+            color: #ffd60a;
+            font-size: 0.9rem;
+            text-align: center;
+            width: 100%;
+        }
+
+        .controls-panel {
+            background: rgba(0, 8, 20, 0.8);
+            border: 2px solid #ffd60a;
+            border-radius: 10px;
+            padding: 20px;
+            color: #fff;
+            max-height: 650px;
+            overflow-y: auto;
+        }
+
+        .control-section {
+            margin-bottom: 18px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #ffd60a;
+        }
+
+        .control-section:last-child {
+            border-bottom: none;
+        }
+
+        .control-section h4 {
+            margin: 0 0 12px 0;
+            color: #ffd60a;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .satellite-selector {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-bottom: 10px;
+        }
+
+        .sat-btn {
+            padding: 10px;
+            background: linear-gradient(135deg, #ffd60a 0%, #ffc300 100%);
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            user-select: none;
+        }
+
+        .sat-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 214, 10, 0.5);
+        }
+
+        .sat-btn.active {
+            background: #00d4ff;
+            color: #000;
+        }
+
+        .orbit-selector {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+
+        .orbit-btn {
+            padding: 8px;
+            background: rgba(255, 214, 10, 0.2);
+            border: 2px solid #ffd60a;
+            border-radius: 5px;
+            color: #ffd60a;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .orbit-btn:hover {
+            background: rgba(255, 214, 10, 0.4);
+        }
+
+        .orbit-btn.active {
+            background: #ffd60a;
+            color: #000;
+        }
+
+        .control-input {
+            width: 100%;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid #ffd60a;
+            border-radius: 4px;
+            color: #ffd60a;
+            font-size: 0.9rem;
+            margin-bottom: 8px;
+        }
+
+        .control-input::placeholder {
+            color: rgba(255, 214, 10, 0.5);
+        }
+
+        .slider-container {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .slider-container input[type="range"] {
+            flex: 1;
+            cursor: pointer;
+        }
+
+        .slider-value {
+            color: #00d4ff;
+            font-weight: bold;
+            min-width: 50px;
+            text-align: right;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0;
+            background: linear-gradient(135deg, #ffd60a 0%, #ffc300 100%);
+            border: none;
+            border-radius: 5px;
+            color: #000;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+        }
+
+        .action-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 214, 10, 0.5);
+        }
+
+        .action-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .stats-display {
+            background: rgba(255, 214, 10, 0.1);
+            padding: 12px;
+            border-radius: 5px;
+            font-size: 0.8rem;
+            line-height: 1.8;
+            border: 1px solid #ffd60a;
+        }
+
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+        }
+
+        .stat-label {
+            color: #ffd60a;
+        }
+
+        .stat-value {
+            color: #00d4ff;
+            font-weight: bold;
+        }
+
+        .status-message {
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 12px;
+            font-size: 0.85rem;
+            text-align: center;
+            border: 2px solid;
+        }
+
+        .status-message.success {
+            background: rgba(0, 212, 255, 0.2);
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+
+        .status-message.error {
+            background: rgba(255, 50, 50, 0.2);
+            border-color: #ff3232;
+            color: #ff8080;
+        }
+
+        .status-message.info {
+            background: rgba(255, 214, 10, 0.2);
+            border-color: #ffd60a;
+            color: #ffd60a;
+        }
+
+        .status-message.warning {
+            background: rgba(255, 150, 0, 0.2);
+            border-color: #ff9600;
+            color: #ffb84d;
+        }
+
+        .result-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 8, 20, 0.98);
+            border: 3px solid #ffd60a;
+            border-radius: 15px;
+            padding: 30px;
+            text-align: center;
+            z-index: 1000;
+            display: none;
+            max-width: 450px;
+        }
+
+        .result-modal.show {
+            display: block;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -40%);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%);
+            }
+        }
+
+        .result-modal h2 {
+            color: #ffd60a;
+            font-size: 2rem;
+            margin: 10px 0;
+        }
+
+        .result-modal p {
+            color: #fff;
+            margin: 10px 0;
+            font-size: 1.05rem;
+        }
+
+        .result-modal .stats {
+            background: rgba(255, 214, 10, 0.1);
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #ffd60a;
+            text-align: left;
+        }
+
+        .result-modal .stats p {
+            margin: 10px 0;
+            color: #00d4ff;
+        }
+
+        .backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 999;
+            display: none;
+        }
+
+        .backdrop.show {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .game-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .canvas-container {
+                min-height: 500px;
+            }
+
+            .controls-panel {
+                max-height: none;
+            }
+        }
+
+        .instruction-box {
+            background: rgba(255, 214, 10, 0.1);
+            border: 2px solid #ffd60a;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            color: #ffd60a;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .instruction-box strong {
+            color: #00d4ff;
+        }
+    </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
@@ -30,132 +368,98 @@
         <h1 class="page-title">🛰️ Uydu Yörünge Yerleştirme</h1>
         <p class="page-subtitle">TÜRKSAT 6A ve İMECE gibi uyduları doğru yörüngeye yerleştir!</p>
 
+        <div class="instruction-box">
+            <strong>📖 Nasıl Oynanır:</strong><br>
+            1️⃣ Bir uydu türü seçin (Haberleşme, Keşif, Küp Uydu)<br>
+            2️⃣ Hedef yörüngeyi belirleyin (LEO, MEO, GEO)<br>
+            3️⃣ Hız ve açı ayarlarını yapın<br>
+            4️⃣ "UYDU FIRLATMA" butonuna tıklayın<br>
+            5️⃣ Uyduyu doğru yörüngeye yerleştirin! Çarpışmalara dikkat edin!
+        </div>
+
         <!-- OYUN ALANI -->
-        <div class="game-container">
-            <div class="game-placeholder">
-                <div style="font-size: 5rem; margin-bottom: 2rem;">🛰️</div>
-                <h2>Uydu Simülasyonu Geliştirme Alanı</h2>
-                <p>Bu alana uydu yörünge yerleştirme oyununuzu ekleyebilirsiniz.</p>
-                <p style="margin-top: 1rem;">Önerilen özellikler:</p>
-                <ul style="list-style: none; padding: 0; color: #9ca3af;">
-                    <li>✦ Dünya ve yörüngelerin görselleştirilmesi</li>
-                    <li>✦ Farklı uydu tipleri (haberleşme, keşif, küp uydu)</li>
-                    <li>✦ Yörünge hesaplamaları (LEO, MEO, GEO)</li>
-                    <li>✦ Hız ve açı ayarları</li>
-                    <li>✦ Yerçekimi simülasyonu</li>
-                    <li>✦ Çarpışma uyarı sistemi</li>
-                    <li>✦ Yakıt yönetimi</li>
-                </ul>
-                <div style="margin-top: 2rem;">
-                    <a href="oyunlar.html" class="btn btn-primary">⬅ Oyunlar Sayfasına Dön</a>
+        <div class="game-wrapper">
+            <div class="canvas-container">
+                <canvas id="gameCanvas" width="620" height="600"></canvas>
+                <div class="game-info" id="gameInfo">Uydu ve Yörüngeleri Seç</div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="status-message info" id="statusMessage" style="display: none;"></div>
+
+                <div class="control-section">
+                    <h4>🛰️ Uydu Seç</h4>
+                    <div class="satellite-selector">
+                        <button class="sat-btn" onclick="selectSatellite('comm')">📡 Haberleşme</button>
+                        <button class="sat-btn" onclick="selectSatellite('earth')">🌍 Keşif</button>
+                        <button class="sat-btn" onclick="selectSatellite('cube')">📦 Küp Uydu</button>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h4>🌐 Hedef Yörünge</h4>
+                    <div class="orbit-selector">
+                        <button class="orbit-btn" onclick="selectOrbit('leo')">📍 LEO (650 km)</button>
+                        <button class="orbit-btn" onclick="selectOrbit('meo')">📍 MEO (20,000 km)</button>
+                        <button class="orbit-btn" onclick="selectOrbit('geo')">📍 GEO (35,786 km)</button>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h4>⚙️ Parametreler</h4>
+                    <div class="slider-container">
+                        <label style="color: #ffd60a; font-size: 0.8rem;">Hız (km/s)</label>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="speedSlider" min="0" max="15" value="8" step="0.1">
+                        <span class="slider-value" id="speedDisplay">8.0</span>
+                    </div>
+                    <div class="slider-container">
+                        <label style="color: #ffd60a; font-size: 0.8rem;">Açı (°)</label>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="angleSlider" min="0" max="90" value="45" step="1">
+                        <span class="slider-value" id="angleDisplay">45°</span>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h4>📊 İstatistikler</h4>
+                    <div class="stats-display">
+                        <div class="stat-row">
+                            <span class="stat-label">Uydu:</span>
+                            <span class="stat-value" id="satName">Yok</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Yörünge:</span>
+                            <span class="stat-value" id="orbitName">Yok</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Gereken Hız:</span>
+                            <span class="stat-value" id="requiredSpeed">-</span>
+                        </div>
+                        <div class="stat-row">
+                            <span class="stat-label">Durum:</span>
+                            <span class="stat-value" id="statusSat">❌</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <h4>🎮 Kontroller</h4>
+                    <button class="action-btn" id="launchBtn" onclick="launchSatellite()" disabled>🚀 UYDU FIRLATMA</button>
+                    <button class="action-btn" onclick="resetGame()" style="background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%); color: #fff;">🔄 SIFIRLAMA</button>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- YÖRÜNGE TİPLERİ -->
-        <div class="info-box" style="margin-top: 2rem;">
-            <h3>🌍 Yörünge Tipleri</h3>
-            
-            <h4>LEO - Alçak Dünya Yörüngesi (Low Earth Orbit)</h4>
-            <p>• <strong>Yükseklik:</strong> 200-2000 km</p>
-            <p>• <strong>Hız:</strong> ~7.8 km/s</p>
-            <p>• <strong>Periyot:</strong> 90-120 dakika</p>
-            <p>• <strong>Kullanım:</strong> Keşif uyduları, küp uydular, uzay istasyonu</p>
-            <p>• <strong>Örnekler:</strong> Göktürk-1, Göktürk-2, İMECE, RASAT</p>
-            
-            <h4 style="margin-top: 1.5rem;">MEO - Orta Dünya Yörüngesi (Medium Earth Orbit)</h4>
-            <p>• <strong>Yükseklik:</strong> 2000-35,786 km</p>
-            <p>• <strong>Hız:</strong> ~3-7 km/s</p>
-            <p>• <strong>Periyot:</strong> 2-24 saat</p>
-            <p>• <strong>Kullanım:</strong> Navigasyon uyduları, bilimsel araştırma</p>
-            <p>• <strong>Örnekler:</strong> GPS, GLONASS, Galileo uyduları</p>
-            
-            <h4 style="margin-top: 1.5rem;">GEO - Jeosenkron Yörünge (Geostationary Earth Orbit)</h4>
-            <p>• <strong>Yükseklik:</strong> 35,786 km (ekvatorda)</p>
-            <p>• <strong>Hız:</strong> ~3.07 km/s</p>
-            <p>• <strong>Periyot:</strong> 24 saat (Dünya ile senkron)</p>
-            <p>• <strong>Kullanım:</strong> Haberleşme uyduları, meteoroloji uyduları</p>
-            <p>• <strong>Örnekler:</strong> TÜRKSAT 3A, 4A, 4B, 5A, 5B, 6A</p>
-        </div>
-
-        <!-- UYDU PROJELERİ -->
-        <div class="info-box">
-            <h3>🛰️ Türkiye'nin Uydu Projeleri</h3>
-            
-            <h4>TÜRKSAT 6A - İlk Yerli Haberleşme Uydusu</h4>
-            <p>• Yörünge: GEO (35,786 km)</p>
-            <p>• Ağırlık: ~3,500 kg</p>
-            <p>• Fırlatma: 2022 planlandı</p>
-            <p>• Özellik: Tamamen yerli ve milli tasarım</p>
-            
-            <h4 style="margin-top: 1.5rem;">İMECE - Yerli Keşif Uydusu</h4>
-            <p>• Yörünge: LEO (650 km)</p>
-            <p>• Çözünürlük: Metre altı</p>
-            <p>• Fırlatma: 2022 planlandı</p>
-            <p>• Özellik: Yerli alt sistemler</p>
-            
-            <h4 style="margin-top: 1.5rem;">Göktürk-1 ve Göktürk-2</h4>
-            <p>• Yörünge: LEO (650-700 km)</p>
-            <p>• Göktürk-1: Metre altı çözünürlük</p>
-            <p>• Göktürk-2: 2.5 metre çözünürlük</p>
-            <p>• Kullanım: Keşif ve gözetleme</p>
-            
-            <h4 style="margin-top: 1.5rem;">RASAT - İlk Yerli Küçük Uydu</h4>
-            <p>• Yörünge: LEO (700 km)</p>
-            <p>• Ağırlık: ~100 kg</p>
-            <p>• Fırlatma: 2011</p>
-            <p>• Özellik: Tamamen TÜBİTAK UZAY tasarımı</p>
-        </div>
-
-        <!-- OYUN KURALLARI -->
-        <div class="info-box">
-            <h3>📋 Görev Açıklaması</h3>
-            <p><strong>Amaç:</strong> Uyduyu hedef yörüngeye başarıyla yerleştir</p>
-            
-            <p style="margin-top: 1rem;"><strong>Adımlar:</strong></p>
-            <p>1. Uydu tipini seç (haberleşme, keşif, küp uydu)</p>
-            <p>2. Hedef yörüngeyi belirle (LEO, MEO veya GEO)</p>
-            <p>3. Fırlatma parametrelerini ayarla (hız, açı)</p>
-            <p>4. Roketi fırlat ve yörüngeye yerleştir</p>
-            <p>5. Gerekirse yörünge düzeltme yap</p>
-            
-            <p style="margin-top: 1rem;"><strong>Başarı Kriterleri:</strong></p>
-            <p>✦ Doğru yörünge yüksekliği (±10 km tolerans)</p>
-            <p>✦ Doğru yörünge hızı (±0.1 km/s tolerans)</p>
-            <p>✦ Minimum yakıt kullanımı (maksimum verimlilik)</p>
-            <p>✦ Çarpışmasız yerleştirme (mevcut uydulardan kaçın)</p>
-            
-            <p style="margin-top: 1rem;"><strong>Puanlama:</strong></p>
-            <p>• Doğru yörünge: +50 puan</p>
-            <p>• Yakıt verimliliği: +0-30 puan</p>
-            <p>• Hız bonusu: +0-20 puan</p>
-            <p>• Çarpışma: -50 puan</p>
-        </div>
-
-        <!-- FİZİK BİLGİLERİ -->
-        <div class="info-box">
-            <h3>🔬 Öğreneceklerin - Yörünge Fiziği</h3>
-            
-            <h4>1. Yörünge Hızı Formülü</h4>
-            <p>v = √(GM/r)</p>
-            <p>• v: Yörünge hızı</p>
-            <p>• G: Evrensel çekim sabiti</p>
-            <p>• M: Dünya'nın kütlesi</p>
-            <p>• r: Merkez uzaklığı</p>
-            
-            <h4 style="margin-top: 1.5rem;">2. Yörünge Periyodu</h4>
-            <p>T = 2π√(r³/GM)</p>
-            <p>LEO: ~90 dakika</p>
-            <p>GEO: 24 saat</p>
-            
-            <h4 style="margin-top: 1.5rem;">3. Kaçış Hızı</h4>
-            <p>v_kaçış = √(2GM/r) = 11.2 km/s (Dünya için)</p>
-            
-            <h4 style="margin-top: 1.5rem;">4. Hohmann Transfer</h4>
-            <p>İki yörünge arasında en verimli geçiş yöntemi</p>
-            <p>• Eliptik transfer yörüngesi kullanılır</p>
-            <p>• İki yanma noktası: apsis noktalarında</p>
-        </div>
+    <div class="backdrop" id="backdrop" onclick="closeModal()"></div>
+    <div class="result-modal" id="resultModal">
+        <h2 id="resultTitle">🎉 Başarılı!</h2>
+        <p id="resultMessage"></p>
+        <div class="stats" id="resultStats"></div>
+        <button class="action-btn" onclick="closeModal()" style="margin-top: 15px;">Yeniden Dene</button>
     </div>
 
     <footer>
@@ -165,53 +469,359 @@
 
     <script src="script.js"></script>
 
-    <!-- UYDU YÖRÜNGE JAVASCRIPT KODLARI -->
     <script>
-        console.log('🛰️ Uydu Yörünge Yerleştirme oyunu yüklendi');
-        
-        // Fizik sabitleri
-        const G = 6.674e-11; // Evrensel çekim sabiti (m³ kg⁻¹ s⁻²)
-        const M_earth = 5.972e24; // Dünya kütlesi (kg)
-        const R_earth = 6371000; // Dünya yarıçapı (m)
-        
-        // Yörünge hesaplama fonksiyonları
-        function yörüngeHızıHesapla(yükseklik_km) {
-            const r = (R_earth + yükseklik_km * 1000);
-            const v = Math.sqrt(G * M_earth / r);
-            return v / 1000; // km/s cinsinden
+        // Fizik Sabitleri
+        const G = 6.674e-11;
+        const M_earth = 5.972e24;
+        const R_earth = 6371;
+
+        // Uydu Tipleri
+        const SATELLITES = {
+            comm: { name: '📡 TÜRKSAT 6A', mass: 3500, color: '#ff6b9d', fuel: 500 },
+            earth: { name: '🌍 İMECE', mass: 1200, color: '#4ecdc4', fuel: 300 },
+            cube: { name: '📦 RASAT', mass: 100, color: '#95e1d3', fuel: 50 }
+        };
+
+        // Yörünge Tanımları
+        const ORBITS = {
+            leo: { name: 'LEO', height: 650, velocity: 7.78, color: 'rgba(0, 212, 255, 0.3)' },
+            meo: { name: 'MEO', height: 20000, velocity: 3.87, color: 'rgba(255, 165, 0, 0.3)' },
+            geo: { name: 'GEO', height: 35786, velocity: 3.07, color: 'rgba(255, 214, 10, 0.2)' }
+        };
+
+        // Oyun Değişkenleri
+        let selectedSatellite = null;
+        let selectedOrbit = null;
+        let satellite = null;
+        let satellites = [];
+        let gameState = 'idle';
+        let score = 0;
+        let speed = 8;
+        let angle = 45;
+
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // Uydu Seçimi
+        function selectSatellite(type) {
+            selectedSatellite = type;
+            updateUI();
+            updateStatusMessage(`✓ ${SATELLITES[type].name} seçildi!`, 'info');
         }
-        
-        function yörüngePeriyoduHesapla(yükseklik_km) {
-            const r = (R_earth + yükseklik_km * 1000);
-            const T = 2 * Math.PI * Math.sqrt(Math.pow(r, 3) / (G * M_earth));
-            return T / 60; // dakika cinsinden
+
+        // Yörünge Seçimi
+        function selectOrbit(orbitType) {
+            selectedOrbit = orbitType;
+            updateUI();
+            updateStatusMessage(`✓ ${ORBITS[orbitType].name} hedefi seçildi!`, 'info');
         }
-        
-        // Örnek hesaplamalar
-        console.log('LEO (400 km) hızı:', yörüngeHızıHesapla(400).toFixed(2), 'km/s');
-        console.log('GEO (35,786 km) hızı:', yörüngeHızıHesapla(35786).toFixed(2), 'km/s');
-        console.log('LEO periyodu:', yörüngePeriyoduHesapla(400).toFixed(0), 'dakika');
-        
-        // Oyun geliştirme notları:
-        // 1. Canvas ile Dünya ve yörüngeleri çiz
-        // 2. Uydu objesi oluştur ve fizik simülasyonu ekle
-        // 3. Fare veya klavye ile kontrol sistemi yap
-        // 4. Çarpışma tespit sistemi ekle (diğer uydular ile)
-        // 5. Yakıt göstergesi ve yörünge bilgileri göster
+
+        // UI Güncelle
+        function updateUI() {
+            // Uydu Adı
+            document.getElementById('satName').textContent = selectedSatellite ? SATELLITES[selectedSatellite].name : 'Yok';
+            
+            // Yörünge Adı
+            if (selectedOrbit) {
+                const orbitData = ORBITS[selectedOrbit];
+                document.getElementById('orbitName').textContent = `${orbitData.name} (${orbitData.height} km)`;
+                document.getElementById('requiredSpeed').textContent = orbitData.velocity.toFixed(2) + ' km/s';
+            } else {
+                document.getElementById('orbitName').textContent = 'Yok';
+                document.getElementById('requiredSpeed').textContent = '-';
+            }
+
+            // Launch Button
+            const launchBtn = document.getElementById('launchBtn');
+            if (selectedSatellite && selectedOrbit) {
+                launchBtn.disabled = false;
+            } else {
+                launchBtn.disabled = true;
+            }
+
+            // Durum Kontrolü
+            if (selectedSatellite && selectedOrbit) {
+                const requiredSpeed = ORBITS[selectedOrbit].velocity;
+                const speedDiff = Math.abs(speed - requiredSpeed);
+                if (speedDiff < 0.5) {
+                    document.getElementById('statusSat').textContent = '✓ Hız Uygun';
+                } else {
+                    document.getElementById('statusSat').textContent = `⚠️ Hız Farkı: ${speedDiff.toFixed(2)}`;
+                }
+            }
+
+            draw();
+        }
+
+        // Speed Slider
+        document.getElementById('speedSlider').addEventListener('input', function() {
+            speed = parseFloat(this.value);
+            document.getElementById('speedDisplay').textContent = speed.toFixed(1);
+            updateUI();
+        });
+
+        // Angle Slider
+        document.getElementById('angleSlider').addEventListener('input', function() {
+            angle = parseInt(this.value);
+            document.getElementById('angleDisplay').textContent = angle + '°';
+            updateUI();
+        });
+
+        // Durum Mesajı
+        function updateStatusMessage(message, type = 'info') {
+            const statusEl = document.getElementById('statusMessage');
+            statusEl.textContent = message;
+            statusEl.className = 'status-message ' + type;
+            statusEl.style.display = 'block';
+            setTimeout(() => {
+                statusEl.style.display = 'none';
+            }, 3000);
+        }
+
+        // Uydu Fırlatma
+        function launchSatellite() {
+            if (!selectedSatellite || !selectedOrbit) return;
+
+            gameState = 'launching';
+            
+            const satData = SATELLITES[selectedSatellite];
+            const orbitData = ORBITS[selectedOrbit];
+
+            satellite = {
+                type: selectedSatellite,
+                name: satData.name,
+                orbit: selectedOrbit,
+                x: canvas.width / 2,
+                y: canvas.height / 2,
+                vx: speed * Math.cos(angle * Math.PI / 180),
+                vy: speed * Math.sin(angle * Math.PI / 180),
+                mass: satData.mass,
+                color: satData.color,
+                trail: [],
+                targetHeight: orbitData.height,
+                targetVelocity: orbitData.velocity,
+                positioned: false
+            };
+
+            satellites.push(satellite);
+            simulateFlight();
+        }
+
+        // Uçuş Simülasyonu
+        function simulateFlight() {
+            let frameCount = 0;
+            const maxFrames = 300;
+            const earthRadius = 50;
+
+            const flightLoop = setInterval(() => {
+                if (frameCount > maxFrames || gameState !== 'launching') {
+                    clearInterval(flightLoop);
+                    if (satellite) {
+                        checkSuccess();
+                    }
+                    return;
+                }
+
+                frameCount++;
+
+                // Basit Fizik
+                satellite.x += satellite.vx * 0.5;
+                satellite.y += satellite.vy * 0.5;
+                satellite.vy += 0.15; // Yerçekimi
+
+                // Trail
+                satellite.trail.push({ x: satellite.x, y: satellite.y });
+                if (satellite.trail.length > 100) satellite.trail.shift();
+
+                // Çarpışma Kontrolü
+                const distFromCenter = Math.sqrt(Math.pow(satellite.x - canvas.width/2, 2) + Math.pow(satellite.y - canvas.height/2, 2));
+                if (distFromCenter < earthRadius + 20) {
+                    clearInterval(flightLoop);
+                    endGame(false, 'Çarpışma! Roket Dünya\'ya çarptı.');
+                    return;
+                }
+
+                draw();
+            }, 20);
+        }
+
+        // Başarı Kontrolü
+        function checkSuccess() {
+            if (!satellite) return;
+
+            const orbitData = ORBITS[satellite.orbit];
+            const speedDiff = Math.abs(speed - orbitData.targetVelocity);
+            const angleFactor = Math.abs(angle - 45); // 45 derece ideal
+            const altitudeFactor = Math.abs(satellite.y - (canvas.height / 2 - 150)); // Yörünge yüksekliği kontrolü
+
+            let success = false;
+            let message = '';
+
+            if (speedDiff < 0.3 && angleFactor < 15 && altitudeFactor < 100) {
+                success = true;
+                score = Math.floor(1000 - speedDiff * 100 - angleFactor * 10);
+                message = `🎉 Mükemmel Yerleştirme! Uydu ${satellite.orbit.toUpperCase()} yörüngesine yerleştirildi!`;
+            } else if (speedDiff < 0.8 && angleFactor < 30) {
+                success = true;
+                score = Math.floor(500 - speedDiff * 100 - angleFactor * 5);
+                message = `✓ Başarılı Yerleştirme! Uydu yörüngeye yerleştirildi.`;
+            } else {
+                message = `❌ Başarısız! Hız veya açı uygun değil.`;
+            }
+
+            endGame(success, message);
+        }
+
+        // Oyun Sonu
+        function endGame(success, message) {
+            gameState = 'ended';
+            showResultModal(success, message);
+        }
+
+        // Sonuç Modal
+        function showResultModal(success, message) {
+            const modal = document.getElementById('resultModal');
+            const backdrop = document.getElementById('backdrop');
+            const resultTitle = document.getElementById('resultTitle');
+            const resultMessage = document.getElementById('resultMessage');
+            const resultStats = document.getElementById('resultStats');
+
+            resultTitle.textContent = success ? '🎉 Başarılı!' : '❌ Başarısız';
+            resultMessage.textContent = message;
+
+            resultStats.innerHTML = `
+                <p>🛰️ Uydu: ${satellite.name}</p>
+                <p>🌐 Yörünge: ${ORBITS[satellite.orbit].name}</p>
+                <p>📈 Hız: ${speed.toFixed(2)} km/s</p>
+                <p>📐 Açı: ${angle}°</p>
+                <p style="font-size: 1.2rem; color: #ffd60a; margin-top: 10px;">⭐ Skor: ${score}</p>
+            `;
+
+            modal.classList.add('show');
+            backdrop.classList.add('show');
+        }
+
+        // Modal Kapat
+        function closeModal() {
+            document.getElementById('resultModal').classList.remove('show');
+            document.getElementById('backdrop').classList.remove('show');
+            resetGame();
+        }
+
+        // Oyun Sıfırlama
+        function resetGame() {
+            selectedSatellite = null;
+            selectedOrbit = null;
+            satellite = null;
+            satellites = [];
+            gameState = 'idle';
+            score = 0;
+            speed = 8;
+            angle = 45;
+            document.getElementById('speedSlider').value = 8;
+            document.getElementById('angleSlider').value = 45;
+            updateUI();
+            updateStatusMessage('🔄 Oyun sıfırlandı. Yeni bir uydu seçin.', 'info');
+        }
+
+        // Çizim Fonksiyonu
+        function draw() {
+            // Arka Plan
+            ctx.fillStyle = 'rgba(0, 8, 20, 0.5)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Yıldızlar
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            for (let i = 0; i < 100; i++) {
+                const x = (i * 23) % canvas.width;
+                const y = (i * 31) % canvas.height;
+                ctx.fillRect(x, y, 1, 1);
+            }
+
+            const earthRadius = 50;
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+
+            // Yörüngeleri Çiz
+            if (selectedOrbit) {
+                const orbitRadii = {
+                    leo: 80,
+                    meo: 140,
+                    geo: 180
+                };
+
+                ctx.strokeStyle = ORBITS[selectedOrbit].color;
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, orbitRadii[selectedOrbit], 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Yörünge Adı
+                ctx.fillStyle = ORBITS[selectedOrbit].color.replace('0.3', '1');
+                ctx.font = 'bold 12px Arial';
+                ctx.fillText(ORBITS[selectedOrbit].name, centerX + orbitRadii[selectedOrbit] + 10, centerY - 10);
+            }
+
+            // Dünya Çiz
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, earthRadius);
+            gradient.addColorStop(0, '#4ecdc4');
+            gradient.addColorStop(1, '#003566');
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, earthRadius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Dünya Kontur
+            ctx.strokeStyle = '#ffd60a';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Uyduyu Çiz
+            if (satellite) {
+                // Trail
+                ctx.strokeStyle = satellite.color;
+                ctx.lineWidth = 1;
+                ctx.globalAlpha = 0.5;
+                ctx.beginPath();
+                if (satellite.trail.length > 0) {
+                    ctx.moveTo(satellite.trail[0].x, satellite.trail[0].y);
+                    satellite.trail.forEach(point => ctx.lineTo(point.x, point.y));
+                }
+                ctx.stroke();
+                ctx.globalAlpha = 1;
+
+                // Uydu
+                ctx.fillStyle = satellite.color;
+                ctx.beginPath();
+                ctx.arc(satellite.x, satellite.y, 6, 0, Math.PI * 2);
+                ctx.fill();
+
+                // Çerçeve
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // Bilgiler
+            ctx.fillStyle = '#ffd60a';
+            ctx.font = '12px Arial';
+            ctx.fillText(`Hız: ${speed.toFixed(2)} km/s`, 10, 20);
+            ctx.fillText(`Açı: ${angle}°`, 10, 35);
+            if (selectedOrbit) {
+                ctx.fillText(`Gereken Hız: ${ORBITS[selectedOrbit].velocity.toFixed(2)} km/s`, 10, 50);
+            }
+        }
+
+        // Başlangıç
+        window.addEventListener('load', () => {
+            updateUI();
+            draw();
+        });
+
+        // Animasyon Döngüsü
+        setInterval(() => {
+            draw();
+        }, 30);
     </script>
 </body>
 </html>
-
-<!-- 
-═══════════════════════════════════════════════════════════════════════════
-UYDU YÖRÜNGE OYUNU SAYFASI (oyun-uydu.html)
-
-BU SAYFA BOŞ BİR ŞABLONDUR - UYDU OYUNUNUZU BU ALANA EKLEYİN
-
-Oyun ekleme önerileri:
-- Canvas kullanarak Dünya'yı ve yörüngeleri çizin
-- Gerçek fizik hesaplamalarını kullanın (yukarıdaki formüller)
-- Uydu hareketini animasyon yapın
-- Kullanıcı kontrollerini ekleyin (ivme, yön değişimi)
-═══════════════════════════════════════════════════════════════════════════
--->
